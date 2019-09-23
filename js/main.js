@@ -45,7 +45,7 @@ var createData = function () {
         'photos': createRandomArr(photosArr)
       },
       'location': {
-        'x': (getRandomNumber(document.documentElement.clientWidth) - 25),
+        'x': getRandomNumber(map.offsetWidth),
         'y': getRandomInRange(130, 630)
       }
     };
