@@ -5,6 +5,7 @@ var HALF_WIDTH_PIN = 25;
 var HALF_HEIGHT_PIN = 35;
 var map = document.querySelector('.map');
 var pin = document.querySelector('#pin').content.querySelector('.map__pin');
+var card = document.querySelector('#card').content.querySelector('.map__card');
 var listOfPins = map.querySelector('.map__pins');
 var featuresArr = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var photosArr = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
@@ -82,3 +83,20 @@ var addPins = function (arr) {
 
 addPins(data);
 map.classList.remove('map--faded');
+
+var makeCard = function (arr) {
+  var cardElement = card.cloneNode(true);
+  cardElement.querySelector('.popup__title').textContent = arr[0].offer.title;
+  cardElement.querySelector('.popup__text--address').textContent = arr[0].offer.address;
+  cardElement.querySelector('.popup__text--price').textContent = arr[0].offer.price + '₽/ночь';
+  cardElement.querySelector('.popup__type').textContent = arr[0].offer.type;
+  cardElement.querySelector('.popup__text--capacity').textContent = arr[0].offer.rooms + ' комнаты для ' + arr[0].offer.guests + ' гостей';
+  cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + arr[0].offer.checkin + ' , выезд до ' + arr[0].offer.checkout;
+  cardElement.querySelector('.popup__features').textContent = arr[0].offer.features;
+  cardElement.querySelector('.popup__description').textContent = arr[0].offer.description;
+  cardElement.querySelector('.popup__photos').textContent = arr[0].offer.photos;
+  cardElement.querySelector('.popup__avatar').setAttribute('src', arr[0].author.avatar);
+  return cardElement;
+};
+
+map.insertBefore(makeCard(data), map.querySelector('.map__filters-container'));
