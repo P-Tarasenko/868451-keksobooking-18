@@ -33,7 +33,7 @@ var getRandomItem = function (arr) {
 
 var createData = function (count) {
   var data = [];
-  for (var i = 0; i < COUNT; i++) {
+  for (var i = 0; i < count; i++) {
     data[i] = {
       'author': {
         'avatar': 'img/avatars/user0' + (i + 1) + '.png'
