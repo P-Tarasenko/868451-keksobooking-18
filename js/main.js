@@ -117,7 +117,7 @@ var makeCard = function (obj) {
     photo.src = obj.offer.photos[i];
     photosElement.appendChild(photo);
   }
-  if (obj.offer.photos.length == 0) {
+  if (obj.offer.photos.length === 0) {
     photosElement.classList.add('hidden');
   }
 
