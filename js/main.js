@@ -3,8 +3,17 @@
 var COUNT = 8;
 var HALF_WIDTH_PIN = 25;
 var HALF_HEIGHT_PIN = 35;
+var ENTER_KEYCODE = 13;
+var HALF_WIDTH_MAIN_PIN = Math.round(75 / 2);
+var HALF_MAIN_PIN = Math.round(65 / 2);
+var HEIGHT_MAIN_PIN = 87;
 var map = document.querySelector('.map');
 var pin = document.querySelector('#pin').content.querySelector('.map__pin');
+var mainPin = document.querySelector('.map__pin--main');
+var form = document.querySelector('.ad-form');
+var adFormFields = form.querySelectorAll('fieldset');
+var mapFiltersElements = document.querySelector('.map__filters').querySelectorAll('select, fieldset');
+var address = form.querySelector('#address');
 var card = document.querySelector('#card').content.querySelector('.map__card');
 var listOfPins = map.querySelector('.map__pins');
 var photoTemplate = card.querySelector('.popup__photos').querySelector('.popup__photo').cloneNode(true);
@@ -37,6 +46,29 @@ var createRandomArr = function (arr) {
 
 var getRandomItem = function (arr) {
   return arr[getRandomNumber(arr.length - 1)];
+};
+
+var enablePage = function () {
+  map.classList.remove('map--faded');
+  form.classList.remove('ad-form--disabled');
+  enableElements(adFormFields);
+  enableElements(mapFiltersElements);
+};
+
+var disableElements = function (arr) {
+  for (var i = 0; i < arr.length; i++) {
+    arr[i].setAttribute('disabled', '');
+  }
+};
+
+var enableElements = function (arr) {
+  for (var i = 0; i < arr.length; i++) {
+    arr[i].removeAttribute('disabled');
+  }
+};
+
+var writePosition = function (x, y) {
+  address.value = (mainPin.offsetLeft + x) + ', ' + (mainPin.offsetTop + y);
 };
 
 var createData = function (count) {
@@ -88,9 +120,6 @@ var addPins = function (arr) {
   listOfPins.appendChild(fragment);
 };
 
-addPins(data);
-map.classList.remove('map--faded');
-
 var makeCard = function (obj) {
   var cardElement = card.cloneNode(true);
   var photosElement = cardElement.querySelector('.popup__photos');
@@ -125,4 +154,19 @@ var makeCard = function (obj) {
   return cardElement;
 };
 
+mainPin.addEventListener('mousedown', function () {
+  writePosition(HALF_WIDTH_MAIN_PIN, HEIGHT_MAIN_PIN);
+  enablePage();
+});
+
+mainPin.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    enablePage();
+  }
+});
+
+disableElements(adFormFields);
+disableElements(mapFiltersElements);
+writePosition(HALF_MAIN_PIN, HALF_MAIN_PIN);
+addPins(data);
 map.insertBefore(makeCard(data[0]), map.querySelector('.map__filters-container'));
