@@ -14,9 +14,12 @@ var form = document.querySelector('.ad-form');
 var adFormFields = form.querySelectorAll('fieldset');
 var mapFiltersElements = document.querySelector('.map__filters').querySelectorAll('select, fieldset');
 var address = form.querySelector('#address');
+var roomValue = form.querySelector('#room_number');
+var peopleValue = form.querySelector('#capacity');
 var card = document.querySelector('#card').content.querySelector('.map__card');
 var listOfPins = map.querySelector('.map__pins');
 var photoTemplate = card.querySelector('.popup__photos').querySelector('.popup__photo').cloneNode(true);
+var copyPeopleValue = peopleValue.cloneNode(true);
 var featuresArr = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var photosArr = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var types = ['palace', 'flat', 'house', 'bungalo'];
@@ -27,6 +30,12 @@ var typesRu = {
   house: 'Дом'
 };
 var time = ['12:00', '13:00', '14:00'];
+var guestsObj = {
+  0: '<option value="1">для 1 гостя</option>',
+  1: '<option value="1">для 1 гостя</option><option value="2">для 2 гостей</option>',
+  2: '<option value="1">для 1 гостя</option><option value="2">для 2 гостей</option><option value="3">для 3 гостей</option>',
+  3: '<option value="0">Не для гостей</option>'
+};
 
 var getRandomNumber = function (max) {
   return Math.round(Math.random() * max);
@@ -154,6 +163,16 @@ var makeCard = function (obj) {
   return cardElement;
 };
 
+var addPeopleValue = function () {
+  peopleValue.innerHTML = '';
+  for (var i = 0; i < copyPeopleValue.length; i++) {
+    if (roomValue.options.selectedIndex === i) {
+      peopleValue.innerHTML = guestsObj[i];
+    }
+  }
+  return peopleValue;
+};
+
 mainPin.addEventListener('mousedown', function () {
   writePosition(HALF_WIDTH_MAIN_PIN, HEIGHT_MAIN_PIN);
   enablePage();
@@ -165,8 +184,11 @@ mainPin.addEventListener('keydown', function (evt) {
   }
 });
 
+roomValue.addEventListener('click', addPeopleValue);
+
 disableElements(adFormFields);
 disableElements(mapFiltersElements);
 writePosition(HALF_MAIN_PIN, HALF_MAIN_PIN);
-addPins(data);
-map.insertBefore(makeCard(data[0]), map.querySelector('.map__filters-container'));
+peopleValue.innerHTML = guestsObj[0];
+// addPins(data);
+// map.insertBefore(makeCard(data[0]), map.querySelector('.map__filters-container'));
