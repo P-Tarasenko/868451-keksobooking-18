@@ -6,19 +6,18 @@ var HALF_HEIGHT_PIN = 35;
 var ENTER_KEYCODE = 13;
 var HALF_MAIN_PIN = Math.round(62 / 2);
 var HEIGHT_MAIN_PIN = 87;
-var map = document.querySelector('.map');
-var pin = document.querySelector('#pin').content.querySelector('.map__pin');
-var mainPin = document.querySelector('.map__pin--main');
-var form = document.querySelector('.ad-form');
-var adFormFields = form.querySelectorAll('fieldset');
+var mapElement = document.querySelector('.map');
+var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var mainPinElement = document.querySelector('.map__pin--main');
+var formElement = document.querySelector('.ad-form');
+var adFormFieldsElements = formElement.querySelectorAll('fieldset');
 var mapFiltersElements = document.querySelector('.map__filters').querySelectorAll('select, fieldset');
-var address = form.querySelector('#address');
-var roomValue = form.querySelector('#room_number');
-var peopleValue = form.querySelector('#capacity');
-var card = document.querySelector('#card').content.querySelector('.map__card');
-var listOfPins = map.querySelector('.map__pins');
-var photoTemplate = card.querySelector('.popup__photos').querySelector('.popup__photo').cloneNode(true);
-var copyPeopleValue = peopleValue.cloneNode(true);
+var addressElement = formElement.querySelector('#address');
+var roomValueElement = formElement.querySelector('#room_number');
+var peopleValueElement = formElement.querySelector('#capacity');
+var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+var listOfPinsElement = mapElement.querySelector('.map__pins');
+var photoTemplate = cardTemplate.querySelector('.popup__photos').querySelector('.popup__photo').cloneNode(true);
 var featuresArr = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var photosArr = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var types = ['palace', 'flat', 'house', 'bungalo'];
@@ -57,9 +56,9 @@ var getRandomItem = function (arr) {
 };
 
 var enablePage = function () {
-  map.classList.remove('map--faded');
-  form.classList.remove('ad-form--disabled');
-  setDisabled(adFormFields, false);
+  mapElement.classList.remove('map--faded');
+  formElement.classList.remove('ad-form--disabled');
+  setDisabled(adFormFieldsElements, false);
   setDisabled(mapFiltersElements, false);
 };
 
@@ -67,18 +66,14 @@ var setDisabled = function (arr, value) {
   for (var i = 0; i < arr.length; i++) {
     arr[i].disabled = value;
   }
-}
-
-var writePosition = function (x, y) {
-  address.value = (mainPin.offsetLeft + x) + ', ' + (mainPin.offsetTop + y);
 };
 
 var setAddress = function (str) {
-  address.value = (mainPin.offsetLeft + str) + ', ' + (mainPin.offsetTop + str);
+  addressElement.value = (mainPinElement.offsetLeft + str) + ', ' + (mainPinElement.offsetTop + str);
 };
 
-var getMainPinCoordinate = function () {
-  address.value = (mainPin.offsetLeft + HALF_MAIN_PIN) + ', ' + (mainPin.offsetTop + HEIGHT_MAIN_PIN);
+var setMainPinCoordinate = function () {
+  addressElement.value = (mainPinElement.offsetLeft + HALF_MAIN_PIN) + ', ' + (mainPinElement.offsetTop + HEIGHT_MAIN_PIN);
 };
 
 var createData = function (count) {
@@ -102,7 +97,7 @@ var createData = function (count) {
         'photos': createRandomArr(photosArr)
       },
       'location': {
-        'x': getRandomNumber(map.offsetWidth),
+        'x': getRandomNumber(mapElement.offsetWidth),
         'y': getRandomInRange(130, 630)
       }
     };
@@ -111,7 +106,7 @@ var createData = function (count) {
 };
 
 var createPin = function (obj) {
-  var similarPin = pin.cloneNode(true);
+  var similarPin = pinTemplate.cloneNode(true);
   var img = similarPin.querySelector('img');
   similarPin.style.left = (obj.location.x - HALF_WIDTH_PIN) + 'px';
   similarPin.style.top = (obj.location.y - HALF_HEIGHT_PIN) + 'px';
@@ -125,11 +120,11 @@ var addPins = function (arr) {
   for (var i = 0; i < arr.length; i++) {
     fragment.appendChild(createPin(arr[i]));
   }
-  listOfPins.appendChild(fragment);
+  listOfPinsElement.appendChild(fragment);
 };
 
 var makeCard = function (obj) {
-  var cardElement = card.cloneNode(true);
+  var cardElement = cardTemplate.cloneNode(true);
   var photosElement = cardElement.querySelector('.popup__photos');
   var string = '';
 
@@ -162,27 +157,27 @@ var makeCard = function (obj) {
   return cardElement;
 };
 
-var onSelectClick = function () {
-  peopleValue.innerHTML = guestsInRooms[roomValue.options.selectedIndex];
+var onSelectChange = function () {
+  peopleValueElement.innerHTML = guestsInRooms[roomValueElement.options.selectedIndex];
 };
 
-mainPin.addEventListener('mousedown', function () {
-  getMainPinCoordinate();
+mainPinElement.addEventListener('mousedown', function () {
+  setMainPinCoordinate();
   enablePage();
 });
 
-mainPin.addEventListener('keydown', function (evt) {
+mainPinElement.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     enablePage();
   }
 });
 
-roomValue.addEventListener('click', onSelectClick);
+roomValueElement.addEventListener('change', onSelectChange);
 
-setDisabled(adFormFields, true);
+setDisabled(adFormFieldsElements, true);
 setDisabled(mapFiltersElements, true);
 setAddress(HALF_MAIN_PIN);
-peopleValue.innerHTML = guestsInRooms[0];
+peopleValueElement.innerHTML = guestsInRooms[0];
 // var data = createData(COUNT);
 // addPins(data);
-// map.insertBefore(makeCard(data[0]), map.querySelector('.map__filters-container'));
+// mapElement.insertBefore(makeCard(data[0]), mapElement.querySelector('.map__filters-container'));
