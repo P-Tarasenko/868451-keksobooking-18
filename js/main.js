@@ -72,8 +72,12 @@ var setAddress = function (str) {
   addressElement.value = (mainPinElement.offsetLeft + str) + ', ' + (mainPinElement.offsetTop + str);
 };
 
-var setMainPinCoordinate = function () {
-  addressElement.value = (mainPinElement.offsetLeft + HALF_MAIN_PIN) + ', ' + (mainPinElement.offsetTop + HEIGHT_MAIN_PIN);
+var getMainPinCoordinate = function () {
+  return [mainPinElement.offsetLeft + HALF_MAIN_PIN, mainPinElement.offsetTop + HEIGHT_MAIN_PIN];
+};
+
+var setMainPinCoordinate = function (coordinate) {
+  addressElement.value = coordinate[0] + ', ' + coordinate[1];
 };
 
 var createData = function (count) {
@@ -162,7 +166,7 @@ var onSelectChange = function () {
 };
 
 mainPinElement.addEventListener('mousedown', function () {
-  setMainPinCoordinate();
+  setMainPinCoordinate(getMainPinCoordinate());
   enablePage();
 });
 
