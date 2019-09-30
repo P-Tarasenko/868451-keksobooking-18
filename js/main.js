@@ -68,11 +68,11 @@ var setDisabled = function (arr, value) {
   }
 };
 
-var setAddress = function (str) {
-  addressElement.value = (mainPinElement.offsetLeft + str) + ', ' + (mainPinElement.offsetTop + str);
+var getMainPinCoordinateDisabledPage = function () {
+  return [mainPinElement.offsetLeft + HALF_MAIN_PIN, mainPinElement.offsetTop + HALF_MAIN_PIN];
 };
 
-var getMainPinCoordinate = function () {
+var getMainPinCoordinateActivePage = function () {
   return [mainPinElement.offsetLeft + HALF_MAIN_PIN, mainPinElement.offsetTop + HEIGHT_MAIN_PIN];
 };
 
@@ -166,7 +166,7 @@ var onSelectChange = function () {
 };
 
 mainPinElement.addEventListener('mousedown', function () {
-  setMainPinCoordinate(getMainPinCoordinate());
+  setMainPinCoordinate(getMainPinCoordinateActivePage());
   enablePage();
 });
 
@@ -180,7 +180,7 @@ roomValueElement.addEventListener('change', onSelectChange);
 
 setDisabled(adFormFieldsElements, true);
 setDisabled(mapFiltersElements, true);
-setAddress(HALF_MAIN_PIN);
+setMainPinCoordinate(getMainPinCoordinateDisabledPage());
 peopleValueElement.innerHTML = guestsInRooms[0];
 // var data = createData(COUNT);
 // addPins(data);
