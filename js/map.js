@@ -22,6 +22,14 @@
     house: 'Дом'
   };
 
+  var activateMap = function () {
+    mapElement.classList.remove('map--faded');
+  };
+
+  var activateForm = function () {
+    window.util.setDisabled(mapFiltersElements, false);
+  };
+
   var getMainPinCoordinateDisabledPage = function () {
     return [mainPinElement.offsetLeft + HALF_MAIN_PIN, mainPinElement.offsetTop + HALF_MAIN_PIN];
   };
@@ -93,11 +101,16 @@
     }
   });
 
-  window.form.deactivate(true);
+  window.form.deactivateElements(true);
   window.util.setDisabled(mapFiltersElements, true);
   window.form.setAddress(getMainPinCoordinateDisabledPage());
   var data = window.data.createData(COUNT);
   addPins(data);
   mapElement.insertBefore(makeCard(data[0]), mapElement.querySelector('.map__filters-container'));
+
+  window.map = {
+    activate: activateMap,
+    activateForm: activateForm
+  };
 
 })();

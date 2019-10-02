@@ -9,7 +9,6 @@
   };
 
   window.util = {
-    mapElement: document.querySelector('.map'),
     setDisabled: setDisabled
   };
 

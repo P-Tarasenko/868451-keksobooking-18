@@ -18,22 +18,27 @@
     peopleValueElement.innerHTML = guestsInRooms[roomValueElement.options.selectedIndex];
   };
 
-  roomValueElement.addEventListener('change', onSelectChange);
-
   var setMainPinCoordinate = function (coordinate) {
     addressElement.value = coordinate[0] + ', ' + coordinate[1];
   };
 
-  var deactivate = function (value) {
+  var deactivateElements = function (value) {
     window.util.setDisabled(adFormFieldsElements, value);
   };
+
+  var activateForm = function () {
+    formElement.classList.remove('ad-form--disabled');
+  };
+
+  roomValueElement.addEventListener('change', onSelectChange);
+
+  peopleValueElement.innerHTML = guestsInRooms[0];
 
   window.form = {
     setAddress: setMainPinCoordinate,
     formElement: formElement,
-    deactivate: deactivate
+    deactivateElements: deactivateElements,
+    activate: activateForm
   };
-
-  peopleValueElement.innerHTML = guestsInRooms[0];
 
 })();
