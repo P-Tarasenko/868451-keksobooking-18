@@ -4,6 +4,7 @@
 
   var formElement = document.querySelector('.ad-form');
   var addressElement = document.querySelector('#address');
+  var adFormFieldsElements = formElement.querySelectorAll('fieldset');
   var peopleValueElement = formElement.querySelector('#capacity');
   var roomValueElement = formElement.querySelector('#room_number');
   var guestsInRooms = {
@@ -23,10 +24,14 @@
     addressElement.value = coordinate[0] + ', ' + coordinate[1];
   };
 
+  var deactivate = function (value) {
+    window.util.setDisabled(adFormFieldsElements, value);
+  };
+
   window.form = {
-    setMainPinCoordinate: setMainPinCoordinate,
+    setAddress: setMainPinCoordinate,
     formElement: formElement,
-    adFormFieldsElements: formElement.querySelectorAll('fieldset')
+    deactivate: deactivate
   };
 
   peopleValueElement.innerHTML = guestsInRooms[0];

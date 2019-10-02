@@ -2,6 +2,7 @@
 
 (function () {
 
+  var mapElement = document.querySelector('.map');
   var featuresArr = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var photosArr = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
   var types = ['palace', 'flat', 'house', 'bungalo'];
@@ -48,7 +49,7 @@
           'photos': createRandomArr(photosArr)
         },
         'location': {
-          'x': getRandomNumber(window.util.mapElement.offsetWidth),
+          'x': getRandomNumber(mapElement.offsetWidth),
           'y': getRandomInRange(130, 630)
         }
       };

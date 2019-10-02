@@ -13,7 +13,7 @@
   var mainPinElement = document.querySelector('.map__pin--main');
   var mapFiltersElements = document.querySelector('.map__filters').querySelectorAll('select, fieldset');
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-  var listOfPinsElement = window.util.mapElement.querySelector('.map__pins');
+  var listOfPinsElement = mapElement.querySelector('.map__pins');
   var photoTemplate = cardTemplate.querySelector('.popup__photos').querySelector('.popup__photo').cloneNode(true);
   var typesRu = {
     palace: 'Дворец',
@@ -83,19 +83,19 @@
   };
 
   mainPinElement.addEventListener('mousedown', function () {
-    window.form.setMainPinCoordinate(getMainPinCoordinateActivePage());
-    window.page.enablePage();
+    window.form.setAddress(getMainPinCoordinateActivePage());
+    window.page.activate();
   });
 
   mainPinElement.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      window.page.enablePage();
+      window.page.activate();
     }
   });
 
-  window.page.setDisabled(window.form.adFormFieldsElements, true);
-  window.page.setDisabled(mapFiltersElements, true);
-  window.form.setMainPinCoordinate(getMainPinCoordinateDisabledPage());
+  window.form.deactivate(true);
+  window.util.setDisabled(mapFiltersElements, true);
+  window.form.setAddress(getMainPinCoordinateDisabledPage());
   var data = window.data.createData(COUNT);
   addPins(data);
   mapElement.insertBefore(makeCard(data[0]), mapElement.querySelector('.map__filters-container'));
