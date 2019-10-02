@@ -27,35 +27,37 @@
     return arr[getRandomNumber(arr.length - 1)];
   };
 
-  window.data = {
-    createData: function (count) {
-      var data = [];
-      for (var i = 0; i < count; i++) {
-        data[i] = {
-          'author': {
-            'avatar': 'img/avatars/user0' + (i + 1) + '.png'
-          },
-          'offer': {
-            'title': 'Заголовок',
-            'address': '' + getRandomNumber(600) + ', ' + getRandomNumber(500),
-            'price': getRandomInRange(10000, 100000),
-            'type': getRandomItem(types),
-            'rooms': getRandomNumber(4),
-            'guests': getRandomNumber(10),
-            'checkin': getRandomItem(time),
-            'checkout': getRandomItem(time),
-            'features': createRandomArr(featuresArr),
-            'description': 'Описание',
-            'photos': createRandomArr(photosArr)
-          },
-          'location': {
-            'x': getRandomNumber(window.util.mapElement.offsetWidth),
-            'y': getRandomInRange(130, 630)
-          }
-        };
-      }
-      return data;
+  var createData = function (count) {
+    var data = [];
+    for (var i = 0; i < count; i++) {
+      data[i] = {
+        'author': {
+          'avatar': 'img/avatars/user0' + (i + 1) + '.png'
+        },
+        'offer': {
+          'title': 'Заголовок',
+          'address': '' + getRandomNumber(600) + ', ' + getRandomNumber(500),
+          'price': getRandomInRange(10000, 100000),
+          'type': getRandomItem(types),
+          'rooms': getRandomNumber(4),
+          'guests': getRandomNumber(10),
+          'checkin': getRandomItem(time),
+          'checkout': getRandomItem(time),
+          'features': createRandomArr(featuresArr),
+          'description': 'Описание',
+          'photos': createRandomArr(photosArr)
+        },
+        'location': {
+          'x': getRandomNumber(window.util.mapElement.offsetWidth),
+          'y': getRandomInRange(130, 630)
+        }
+      };
     }
+    return data;
+  };
+
+  window.data = {
+    createData: createData
   };
 
 })();

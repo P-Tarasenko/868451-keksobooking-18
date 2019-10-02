@@ -19,10 +19,12 @@
 
   roomValueElement.addEventListener('change', onSelectChange);
 
+  var setMainPinCoordinate = function (coordinate) {
+    addressElement.value = coordinate[0] + ', ' + coordinate[1];
+  };
+
   window.form = {
-    setMainPinCoordinate: function (coordinate) {
-      addressElement.value = coordinate[0] + ', ' + coordinate[1];
-    },
+    setMainPinCoordinate: setMainPinCoordinate,
     formElement: formElement,
     adFormFieldsElements: formElement.querySelectorAll('fieldset')
   };

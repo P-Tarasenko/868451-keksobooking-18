@@ -10,13 +10,15 @@
     }
   };
 
+  var enablePage = function () {
+    window.util.mapElement.classList.remove('map--faded');
+    window.form.formElement.classList.remove('ad-form--disabled');
+    setDisabled(window.form.adFormFieldsElements, false);
+    setDisabled(mapFiltersElements, false);
+  };
+
   window.page = {
-    enablePage: function () {
-      window.util.mapElement.classList.remove('map--faded');
-      window.form.formElement.classList.remove('ad-form--disabled');
-      setDisabled(window.form.adFormFieldsElements, false);
-      setDisabled(mapFiltersElements, false);
-    },
+    enablePage: enablePage,
     setDisabled: setDisabled
   };
 
