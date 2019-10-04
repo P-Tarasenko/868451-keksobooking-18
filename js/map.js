@@ -2,7 +2,6 @@
 
 (function () {
 
-  var COUNT = 8;
   var HALF_WIDTH_PIN = 25;
   var HALF_HEIGHT_PIN = 35;
   var ENTER_KEYCODE = 13;
@@ -68,8 +67,8 @@
     cardElement.querySelector('.popup__text--capacity').textContent = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + obj.offer.checkin + ' , выезд до ' + obj.offer.checkout;
 
-    for (i = 0; i < data[0].offer.features.length; i++) {
-      string += '<li class="popup__feature popup__feature--' + data[0].offer.features[i] + '"></li>';
+    for (i = 0; i < obj.offer.features.length; i++) {
+      string += '<li class="popup__feature popup__feature--' + obj.offer.features[i] + '"></li>';
     }
 
     cardElement.querySelector('.popup__features').innerHTML = string;
@@ -90,6 +89,12 @@
     return cardElement;
   };
 
+  var onLoad = function (arr) {
+    var data = window.data.create(arr);
+    addPins(data);
+    mapElement.insertBefore(makeCard(data[0]), mapElement.querySelector('.map__filters-container'));
+  };
+
   mainPinElement.addEventListener('mousedown', function () {
     window.form.setAddress(getMainPinCoordinateActivePage());
     window.page.activate();
@@ -104,9 +109,7 @@
   window.form.deactivateElements(true);
   window.util.setDisabled(mapFiltersElements, true);
   window.form.setAddress(getMainPinCoordinateDisabledPage());
-  var data = window.data.createData(COUNT);
-  addPins(data);
-  mapElement.insertBefore(makeCard(data[0]), mapElement.querySelector('.map__filters-container'));
+  window.backend.load(onLoad, window.backend.loadError);
 
   window.map = {
     activate: activateMap,
