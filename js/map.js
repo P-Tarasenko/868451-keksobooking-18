@@ -89,7 +89,7 @@
     return cardElement;
   };
 
-  var onLoad = function (arr) {
+  var loadSuccsess = function (arr) {
     var data = window.data.create(arr);
     addPins(data);
     mapElement.insertBefore(makeCard(data[0]), mapElement.querySelector('.map__filters-container'));
@@ -109,7 +109,7 @@
   window.form.deactivateElements(true);
   window.util.setDisabled(mapFiltersElements, true);
   window.form.setAddress(getMainPinCoordinateDisabledPage());
-  window.backend.load(onLoad, window.backend.loadError);
+  window.backend.load(loadSuccsess, window.backend.loadError);
 
   window.map = {
     activate: activateMap,
