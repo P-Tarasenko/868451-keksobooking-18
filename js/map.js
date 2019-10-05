@@ -90,7 +90,7 @@
   };
 
   var loadSuccsess = function (arr) {
-    var data = window.data.create(arr);
+    var data = arr;
     addPins(data);
     mapElement.insertBefore(makeCard(data[0]), mapElement.querySelector('.map__filters-container'));
   };
