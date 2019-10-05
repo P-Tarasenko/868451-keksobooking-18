@@ -109,7 +109,7 @@
   window.form.deactivateElements(true);
   window.util.setDisabled(mapFiltersElements, true);
   window.form.setAddress(getMainPinCoordinateDisabledPage());
-  window.backend.load(loadSuccsess, window.backend.loadError);
+  window.backend.load(loadSuccsess, window.util.loadError);
 
   window.map = {
     activate: activateMap,
