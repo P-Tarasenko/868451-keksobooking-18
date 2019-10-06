@@ -44,6 +44,10 @@
     similarPin.style.top = (obj.location.y - HALF_HEIGHT_PIN) + 'px';
     img.setAttribute('src', obj.author.avatar);
     img.setAttribute('alt', obj.offer.title);
+
+    similarPin.addEventListener('click', function () {
+      mapElement.insertBefore(makeCard(obj), mapElement.querySelector('.map__filters-container'));
+    });
     return similarPin;
   };
 
@@ -91,7 +95,7 @@
 
   var loadSuccsess = function (data) {
     addPins(data);
-    mapElement.insertBefore(makeCard(data[0]), mapElement.querySelector('.map__filters-container'));
+    // mapElement.insertBefore(makeCard(data[0]), mapElement.querySelector('.map__filters-container'));
   };
 
   mainPinElement.addEventListener('mousedown', function () {
