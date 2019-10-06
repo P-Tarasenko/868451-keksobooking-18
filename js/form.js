@@ -7,6 +7,10 @@
   var adFormFieldsElements = formElement.querySelectorAll('fieldset');
   var peopleValueElement = formElement.querySelector('#capacity');
   var roomValueElement = formElement.querySelector('#room_number');
+  var timeInElement = formElement.querySelector('#timein');
+  var timeOutElement = formElement.querySelector('#timeout');
+  var typeElement = formElement.querySelector('#type');
+  var priceElement = formElement.querySelector('#price');
   var guestsInRooms = {
     0: '<option value="1">для 1 гостя</option>',
     1: '<option value="1">для 1 гостя</option><option value="2">для 2 гостей</option>',
@@ -14,10 +18,24 @@
     3: '<option value="0">Не для гостей</option>'
   };
 
-  formElement.onchange = function (evt) {
-    this.timein.value = evt.target.value;
-    this.timeout.value = evt.target.value;
+  var minPrice = {
+    bungalo: 0,
+    flat: 1000,
+    house: 5000,
+    palace: 10000
   };
+
+  typeElement.addEventListener('change', function (evt) {
+    priceElement.setAttribute('min', minPrice[evt.target.value]);
+  });
+
+  timeInElement.addEventListener('change', function (evt) {
+    timeOutElement.value = evt.target.value;
+  });
+
+  timeOutElement.addEventListener('change', function (evt) {
+    timeInElement.value = evt.target.value;
+  });
 
 
   var onSelectChange = function () {
