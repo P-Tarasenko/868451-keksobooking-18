@@ -14,6 +14,12 @@
     3: '<option value="0">Не для гостей</option>'
   };
 
+  formElement.onchange = function (evt) {
+    this.timein.value = evt.target.value;
+    this.timeout.value = evt.target.value;
+  };
+
+
   var onSelectChange = function () {
     peopleValueElement.innerHTML = guestsInRooms[roomValueElement.options.selectedIndex];
   };
