@@ -25,19 +25,6 @@
     palace: 10000
   };
 
-  typeElement.addEventListener('change', function (evt) {
-    priceElement.setAttribute('min', minPrice[evt.target.value]);
-  });
-
-  timeInElement.addEventListener('change', function (evt) {
-    timeOutElement.value = evt.target.value;
-  });
-
-  timeOutElement.addEventListener('change', function (evt) {
-    timeInElement.value = evt.target.value;
-  });
-
-
   var onSelectChange = function () {
     peopleValueElement.innerHTML = guestsInRooms[roomValueElement.options.selectedIndex];
   };
@@ -54,9 +41,22 @@
     formElement.classList.remove('ad-form--disabled');
   };
 
+  typeElement.addEventListener('change', function (evt) {
+    priceElement.setAttribute('min', minPrice[evt.target.value]);
+  });
+
+  timeInElement.addEventListener('change', function (evt) {
+    timeOutElement.value = evt.target.value;
+  });
+
+  timeOutElement.addEventListener('change', function (evt) {
+    timeInElement.value = evt.target.value;
+  });
+
   roomValueElement.addEventListener('change', onSelectChange);
 
   peopleValueElement.innerHTML = guestsInRooms[0];
+  priceElement.setAttribute('min', minPrice[typeElement.value]);
 
   window.form = {
     setAddress: setMainPinCoordinate,
