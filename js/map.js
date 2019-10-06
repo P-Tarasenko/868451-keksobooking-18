@@ -130,6 +130,7 @@
 
     mainPinElement.addEventListener('keydown', function (evt) {
       if (evt.keyCode === ENTER_KEYCODE) {
+        window.form.setAddress(getMainPinCoordinateActivePage());
         window.page.activate();
         addPins(data);
       }
