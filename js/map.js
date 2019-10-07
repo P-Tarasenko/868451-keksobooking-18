@@ -22,10 +22,8 @@
   };
 
   var closeCard = function () {
-    var containerElement = document.querySelector('.map__card-container');
-    if (containerElement.childNodes[0]) {
-      containerElement.removeChild(containerElement.childNodes[0]);
-    }
+    mapElement.removeChild(mapElement.querySelector('.map__card'));
+    document.removeEventListener('keydown', onEscPress);
   };
 
   var activateMap = function () {
@@ -76,13 +74,6 @@
     var photosElement = cardElement.querySelector('.popup__photos');
     var string = '';
 
-    var onEscPress = function (evt) {
-      if (evt.keyCode === window.util.ESC_KEYCODE) {
-        closeCard();
-        document.removeEventListener('keydown', onEscPress);
-      }
-    };
-
     cardElement.querySelector('.popup__title').textContent = obj.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = obj.offer.address;
     cardElement.querySelector('.popup__text--price').textContent = obj.offer.price + '₽/ночь';
@@ -128,6 +119,12 @@
         addPins(data);
       }
     });
+  };
+
+  var onEscPress = function (evt) {
+    if (evt.keyCode === window.util.ESC_KEYCODE) {
+      closeCard();
+    }
   };
 
   window.form.deactivateElements(true);
