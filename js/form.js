@@ -43,6 +43,7 @@
 
   typeElement.addEventListener('change', function (evt) {
     priceElement.setAttribute('min', minPrice[evt.target.value]);
+    priceElement.setAttribute('placeholder', minPrice[evt.target.value]);
   });
 
   timeInElement.addEventListener('change', function (evt) {
