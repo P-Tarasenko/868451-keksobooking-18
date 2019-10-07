@@ -21,11 +21,6 @@
     house: 'Дом'
   };
 
-  var cardCloseHandler = function () {
-    mapElement.removeChild(mapElement.querySelector('.map__card'));
-    document.removeEventListener('keydown', onEscPress);
-  };
-
   var activateMap = function () {
     mapElement.classList.remove('map--faded');
   };
@@ -42,6 +37,29 @@
     return [mainPinElement.offsetLeft + HALF_MAIN_PIN, mainPinElement.offsetTop + HEIGHT_MAIN_PIN];
   };
 
+  var loadSuccsess = function (data) {
+    mainPinElement.addEventListener('mousedown', function () {
+      window.form.setAddress(getMainPinCoordinateActivePage());
+      window.page.activate();
+      addPins(data);
+    });
+
+    mainPinElement.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ENTER_KEYCODE) {
+        window.form.setAddress(getMainPinCoordinateActivePage());
+        window.page.activate();
+        addPins(data);
+      }
+    });
+  };
+
+  var openCard = function (data) {
+    if (mapElement.querySelector('.map__card')) {
+      mapElement.removeChild(mapElement.querySelector('.map__card'));
+    }
+    mapElement.insertBefore(makeCard(data), mapElement.querySelector('.map__filters-container'));
+  };
+
   var createPin = function (obj) {
     var similarPin = pinTemplate.cloneNode(true);
     var img = similarPin.querySelector('img');
@@ -51,10 +69,7 @@
     img.setAttribute('alt', obj.offer.title);
 
     similarPin.addEventListener('click', function () {
-      if (mapElement.querySelector('.map__card')) {
-        mapElement.removeChild(mapElement.querySelector('.map__card'));
-      }
-      mapElement.insertBefore(makeCard(obj), mapElement.querySelector('.map__filters-container'));
+      openCard(obj);
     });
     return similarPin;
   };
@@ -105,26 +120,15 @@
     return cardElement;
   };
 
-  var loadSuccsess = function (data) {
-    mainPinElement.addEventListener('mousedown', function () {
-      window.form.setAddress(getMainPinCoordinateActivePage());
-      window.page.activate();
-      addPins(data);
-    });
-
-    mainPinElement.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === ENTER_KEYCODE) {
-        window.form.setAddress(getMainPinCoordinateActivePage());
-        window.page.activate();
-        addPins(data);
-      }
-    });
-  };
-
   var onEscPress = function (evt) {
     if (evt.keyCode === window.util.ESC_KEYCODE) {
       cardCloseHandler();
     }
+  };
+
+  var cardCloseHandler = function () {
+    mapElement.removeChild(mapElement.querySelector('.map__card'));
+    document.removeEventListener('keydown', onEscPress);
   };
 
   window.form.deactivateElements(true);
