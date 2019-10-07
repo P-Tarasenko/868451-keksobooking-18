@@ -21,7 +21,7 @@
     house: 'Дом'
   };
 
-  var closeCard = function () {
+  var cardCloseHandler = function () {
     mapElement.removeChild(mapElement.querySelector('.map__card'));
     document.removeEventListener('keydown', onEscPress);
   };
@@ -55,8 +55,6 @@
         mapElement.removeChild(mapElement.querySelector('.map__card'));
       }
       mapElement.insertBefore(makeCard(obj), mapElement.querySelector('.map__filters-container'));
-      var closeButton = document.querySelector('.popup__close');
-      closeButton.addEventListener('click', closeCard);
     });
     return similarPin;
   };
@@ -72,6 +70,7 @@
   var makeCard = function (obj) {
     var cardElement = cardTemplate.cloneNode(true);
     var photosElement = cardElement.querySelector('.popup__photos');
+    var closeButton = cardElement.querySelector('.popup__close');
     var string = '';
 
     cardElement.querySelector('.popup__title').textContent = obj.offer.title;
@@ -102,6 +101,7 @@
     cardElement.querySelector('.popup__avatar').setAttribute('src', obj.author.avatar);
 
     document.addEventListener('keydown', onEscPress);
+    closeButton.addEventListener('click', cardCloseHandler);
     return cardElement;
   };
 
@@ -123,7 +123,7 @@
 
   var onEscPress = function (evt) {
     if (evt.keyCode === window.util.ESC_KEYCODE) {
-      closeCard();
+      cardCloseHandler();
     }
   };
 
