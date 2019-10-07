@@ -21,12 +21,6 @@
     house: 'Дом'
   };
 
-  var createCardContainer = function () {
-    var containerElement = document.createElement('div');
-    containerElement.classList.add('map__card-container');
-    mapElement.insertBefore(containerElement, mapElement.querySelector('.map__filters-container'));
-  };
-
   var closeCard = function () {
     var containerElement = document.querySelector('.map__card-container');
     if (containerElement.childNodes[0]) {
@@ -59,11 +53,10 @@
     img.setAttribute('alt', obj.offer.title);
 
     similarPin.addEventListener('click', function () {
-      var containerElement = mapElement.querySelector('.map__card-container');
-      if (containerElement.hasChildNodes()) {
-        containerElement.removeChild(containerElement.childNodes[0]);
+      if (mapElement.querySelector('.map__card')) {
+        mapElement.removeChild(mapElement.querySelector('.map__card'));
       }
-      containerElement.appendChild(makeCard(obj));
+      mapElement.insertBefore(makeCard(obj), mapElement.querySelector('.map__filters-container'));
       var closeButton = document.querySelector('.popup__close');
       closeButton.addEventListener('click', closeCard);
     });
@@ -137,7 +130,6 @@
     });
   };
 
-  createCardContainer();
   window.form.deactivateElements(true);
   window.util.setDisabled(mapFiltersElements, true);
   window.form.setAddress(getMainPinCoordinateDisabledPage());
