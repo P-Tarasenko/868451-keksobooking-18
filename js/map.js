@@ -37,6 +37,39 @@
     return [mainPinElement.offsetLeft + HALF_MAIN_PIN, mainPinElement.offsetTop + HEIGHT_MAIN_PIN];
   };
 
+  var loadSuccsess = function (data) {
+    mainPinElement.addEventListener('mousedown', function () {
+      window.form.setAddress(getMainPinCoordinateActivePage());
+      window.page.activate();
+      addPins(data);
+    });
+
+    mainPinElement.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ENTER_KEYCODE) {
+        window.form.setAddress(getMainPinCoordinateActivePage());
+        window.page.activate();
+        addPins(data);
+      }
+    });
+  };
+
+  var openCard = function (data) {
+    if (mapElement.querySelector('.map__card')) {
+      mapElement.removeChild(mapElement.querySelector('.map__card'));
+    }
+    mapElement.insertBefore(makeCard(data), mapElement.querySelector('.map__filters-container'));
+    var closeButton = mapElement.querySelector('.popup__close');
+    document.addEventListener('keydown', onCardEscPress);
+    closeButton.addEventListener('click', function () {
+      closeCard();
+    });
+  };
+
+  var closeCard = function () {
+    mapElement.removeChild(mapElement.querySelector('.map__card'));
+    document.removeEventListener('keydown', onCardEscPress);
+  };
+
   var createPin = function (obj) {
     var similarPin = pinTemplate.cloneNode(true);
     var img = similarPin.querySelector('img');
@@ -44,6 +77,10 @@
     similarPin.style.top = (obj.location.y - HALF_HEIGHT_PIN) + 'px';
     img.setAttribute('src', obj.author.avatar);
     img.setAttribute('alt', obj.offer.title);
+
+    similarPin.addEventListener('click', function () {
+      openCard(obj);
+    });
     return similarPin;
   };
 
@@ -86,24 +123,15 @@
     }
 
     cardElement.querySelector('.popup__avatar').setAttribute('src', obj.author.avatar);
+
     return cardElement;
   };
 
-  var loadSuccsess = function (data) {
-    addPins(data);
-    mapElement.insertBefore(makeCard(data[0]), mapElement.querySelector('.map__filters-container'));
-  };
-
-  mainPinElement.addEventListener('mousedown', function () {
-    window.form.setAddress(getMainPinCoordinateActivePage());
-    window.page.activate();
-  });
-
-  mainPinElement.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      window.page.activate();
+  var onCardEscPress = function (evt) {
+    if (evt.keyCode === window.util.ESC_KEYCODE) {
+      closeCard();
     }
-  });
+  };
 
   window.form.deactivateElements(true);
   window.util.setDisabled(mapFiltersElements, true);
