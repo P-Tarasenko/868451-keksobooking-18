@@ -65,6 +65,11 @@
     });
   };
 
+  var closeCard = function () {
+    mapElement.removeChild(mapElement.querySelector('.map__card'));
+    document.removeEventListener('keydown', onCardEscPress);
+  };
+
   var createPin = function (obj) {
     var similarPin = pinTemplate.cloneNode(true);
     var img = similarPin.querySelector('img');
@@ -126,11 +131,6 @@
     if (evt.keyCode === window.util.ESC_KEYCODE) {
       closeCard();
     }
-  };
-
-  var closeCard = function () {
-    mapElement.removeChild(mapElement.querySelector('.map__card'));
-    document.removeEventListener('keydown', onCardEscPress);
   };
 
   window.form.deactivateElements(true);

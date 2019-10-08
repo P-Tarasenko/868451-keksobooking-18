@@ -25,10 +25,6 @@
     palace: 10000
   };
 
-  var onSelectChange = function () {
-    peopleValueElement.innerHTML = guestsInRooms[roomValueElement.options.selectedIndex];
-  };
-
   var setMainPinCoordinate = function (coordinate) {
     addressElement.value = coordinate[0] + ', ' + coordinate[1];
   };
@@ -39,6 +35,10 @@
 
   var activateForm = function () {
     formElement.classList.remove('ad-form--disabled');
+  };
+
+  var onSelectChange = function () {
+    peopleValueElement.innerHTML = guestsInRooms[roomValueElement.options.selectedIndex];
   };
 
   typeElement.addEventListener('change', function (evt) {
