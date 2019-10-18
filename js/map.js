@@ -7,6 +7,9 @@
   var ENTER_KEYCODE = 13;
   var HALF_MAIN_PIN = Math.round(62 / 2);
   var HEIGHT_MAIN_PIN = 87;
+  var cardsData = [];
+  var filtersFormElement = document.querySelector('.map__filters');
+  var housingTypeElement = filtersFormElement.querySelector('#housing-type');
   var mapElement = document.querySelector('.map');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mainPinElement = document.querySelector('.map__pin--main');
@@ -38,6 +41,31 @@
   };
 
   var loadSuccsess = function (data) {
+    cardsData = data;
+
+    housingTypeElement.addEventListener('change', function () {
+      var testPins = listOfPinsElement.querySelectorAll('button[type=button]');
+      var len = testPins.length;
+      if (housingTypeElement.value === 'any') {
+        for (var i = 0; i < len; i++) {
+          var node = testPins[i];
+          listOfPinsElement.removeChild(node);
+        }
+        addPins(data);
+      } else {
+      var typeOfHousing = data.filter(function (element) {
+        return element.offer.type === housingTypeElement.value;
+      });
+      // console.log(typeOfHousing);
+      // debugger;
+      for (var i = 0; i < len; i++) {
+        var node = testPins[i];
+        listOfPinsElement.removeChild(node);
+      }
+      addPins(typeOfHousing);
+    }
+    });
+
     mainPinElement.addEventListener('mousedown', function () {
       window.form.setAddress(getMainPinCoordinateActivePage());
       window.page.activate();
@@ -86,7 +114,7 @@
 
   var addPins = function (arr) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < arr.length; i++) {
+    for (var i = 0; i < arr.length && i < 5; i++) {
       fragment.appendChild(createPin(arr[i]));
     }
     listOfPinsElement.appendChild(fragment);
