@@ -7,7 +7,6 @@
   var ENTER_KEYCODE = 13;
   var HALF_MAIN_PIN = Math.round(62 / 2);
   var HEIGHT_MAIN_PIN = 87;
-  // var cardsData = [];
   var filtersFormElement = document.querySelector('.map__filters');
   var housingTypeElement = filtersFormElement.querySelector('#housing-type');
   var mapElement = document.querySelector('.map');
@@ -48,11 +47,13 @@
   };
 
   var loadSuccsess = function (data) {
+    var partOfData = data.slice(0, 5);
+
     housingTypeElement.addEventListener('change', function () {
       var pins = listOfPinsElement.querySelectorAll('button[type=button]');
       if (housingTypeElement.value === 'any') {
         clearListOfPins(pins);
-        addPins(data);
+        addPins(partOfData);
       } else {
         var typeOfHousing = data.filter(function (element) {
           return element.offer.type === housingTypeElement.value;
@@ -65,7 +66,7 @@
     mainPinElement.addEventListener('mousedown', function () {
       window.form.setAddress(getMainPinCoordinateActivePage());
       window.page.activate();
-      addPins(data);
+      addPins(partOfData);
     });
 
     mainPinElement.addEventListener('keydown', function (evt) {
@@ -110,7 +111,7 @@
 
   var addPins = function (arr) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < arr.length && i < 5; i++) {
+    for (var i = 0; i < arr.length; i++) {
       fragment.appendChild(createPin(arr[i]));
     }
     listOfPinsElement.appendChild(fragment);
