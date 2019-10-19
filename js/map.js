@@ -7,6 +7,7 @@
   var ENTER_KEYCODE = 13;
   var HALF_MAIN_PIN = Math.round(62 / 2);
   var HEIGHT_MAIN_PIN = 87;
+  var MAX_VISIBLE_PINS = 5;
   var filtersFormElement = document.querySelector('.map__filters');
   var housingTypeElement = filtersFormElement.querySelector('#housing-type');
   var mapElement = document.querySelector('.map');
@@ -47,7 +48,7 @@
   };
 
   var loadSuccsess = function (data) {
-    var partOfData = data.slice(0, 5);
+    var partOfData = data.slice(0, MAX_VISIBLE_PINS);
 
     housingTypeElement.addEventListener('change', function () {
       var pins = listOfPinsElement.querySelectorAll('button[type=button]');
