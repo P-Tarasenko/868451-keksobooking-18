@@ -47,27 +47,34 @@
     }
   };
 
+  var createMaxPinsArray = function (arr) {
+    if (arr.length > MAX_VISIBLE_PINS) {
+      return arr.slice(0, MAX_VISIBLE_PINS);
+    } else {
+      return arr;
+    }
+  };
+
   var loadSuccsess = function (data) {
-    var partOfData = data.slice(0, MAX_VISIBLE_PINS);
 
     housingTypeElement.addEventListener('change', function () {
       var pins = listOfPinsElement.querySelectorAll('button[type=button]');
       if (housingTypeElement.value === 'any') {
         clearListOfPins(pins);
-        addPins(partOfData);
+        addPins(createMaxPinsArray(data));
       } else {
         var typeOfHousing = data.filter(function (element) {
           return element.offer.type === housingTypeElement.value;
         });
         clearListOfPins(pins);
-        addPins(typeOfHousing);
+        addPins(createMaxPinsArray(typeOfHousing));
       }
     });
 
     mainPinElement.addEventListener('mousedown', function () {
       window.form.setAddress(getMainPinCoordinateActivePage());
       window.page.activate();
-      addPins(partOfData);
+      addPins(createMaxPinsArray(data));
     });
 
     mainPinElement.addEventListener('keydown', function (evt) {
