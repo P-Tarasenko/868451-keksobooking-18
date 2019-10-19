@@ -7,7 +7,7 @@
   var ENTER_KEYCODE = 13;
   var HALF_MAIN_PIN = Math.round(62 / 2);
   var HEIGHT_MAIN_PIN = 87;
-  var cardsData = [];
+  // var cardsData = [];
   var filtersFormElement = document.querySelector('.map__filters');
   var housingTypeElement = filtersFormElement.querySelector('#housing-type');
   var mapElement = document.querySelector('.map');
@@ -40,30 +40,26 @@
     return [mainPinElement.offsetLeft + HALF_MAIN_PIN, mainPinElement.offsetTop + HEIGHT_MAIN_PIN];
   };
 
-  var loadSuccsess = function (data) {
-    cardsData = data;
+  var clearListOfPins = function (arr) {
+    for (var i = 0; i < arr.length; i++) {
+      var node = arr[i];
+      listOfPinsElement.removeChild(node);
+    }
+  };
 
+  var loadSuccsess = function (data) {
     housingTypeElement.addEventListener('change', function () {
-      var testPins = listOfPinsElement.querySelectorAll('button[type=button]');
-      var len = testPins.length;
+      var pins = listOfPinsElement.querySelectorAll('button[type=button]');
       if (housingTypeElement.value === 'any') {
-        for (var i = 0; i < len; i++) {
-          var node = testPins[i];
-          listOfPinsElement.removeChild(node);
-        }
+        clearListOfPins(pins);
         addPins(data);
       } else {
-      var typeOfHousing = data.filter(function (element) {
-        return element.offer.type === housingTypeElement.value;
-      });
-      // console.log(typeOfHousing);
-      // debugger;
-      for (var i = 0; i < len; i++) {
-        var node = testPins[i];
-        listOfPinsElement.removeChild(node);
+        var typeOfHousing = data.filter(function (element) {
+          return element.offer.type === housingTypeElement.value;
+        });
+        clearListOfPins(pins);
+        addPins(typeOfHousing);
       }
-      addPins(typeOfHousing);
-    }
     });
 
     mainPinElement.addEventListener('mousedown', function () {
