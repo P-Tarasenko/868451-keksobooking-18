@@ -7,6 +7,11 @@
   var ENTER_KEYCODE = 13;
   var HALF_MAIN_PIN = Math.round(62 / 2);
   var HEIGHT_MAIN_PIN = 87;
+  var MAX_VISIBLE_PINS = 5;
+  var cardData = [];
+  var pins = [];
+  var filtersFormElement = document.querySelector('.map__filters');
+  var housingTypeElement = filtersFormElement.querySelector('#housing-type');
   var mapElement = document.querySelector('.map');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mainPinElement = document.querySelector('.map__pin--main');
@@ -22,6 +27,7 @@
   };
 
   var activateMap = function () {
+    window.backend.load(loadSuccsess, window.notification.showError);
     mapElement.classList.remove('map--faded');
   };
 
@@ -37,20 +43,20 @@
     return [mainPinElement.offsetLeft + HALF_MAIN_PIN, mainPinElement.offsetTop + HEIGHT_MAIN_PIN];
   };
 
-  var loadSuccsess = function (data) {
-    mainPinElement.addEventListener('mousedown', function () {
-      window.form.setAddress(getMainPinCoordinateActivePage());
-      window.page.activate();
-      addPins(data);
-    });
+  var createMaxPinsArray = function (arr) {
+    return arr.slice(0, MAX_VISIBLE_PINS);
+  };
 
-    mainPinElement.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === ENTER_KEYCODE) {
-        window.form.setAddress(getMainPinCoordinateActivePage());
-        window.page.activate();
-        addPins(data);
-      }
-    });
+  var clearListOfPins = function () {
+    for (var i = 0; i < pins.length; i++) {
+      var node = pins[i];
+      listOfPinsElement.removeChild(node);
+    }
+  };
+
+  var loadSuccsess = function (data) {
+    cardData = data;
+    addPins(createMaxPinsArray(cardData));
   };
 
   var openCard = function (data) {
@@ -89,6 +95,7 @@
     for (var i = 0; i < arr.length; i++) {
       fragment.appendChild(createPin(arr[i]));
     }
+    clearListOfPins();
     listOfPinsElement.appendChild(fragment);
   };
 
@@ -133,10 +140,36 @@
     }
   };
 
+  var onMainPinClick = function () {
+    window.form.setAddress(getMainPinCoordinateActivePage());
+    window.page.activate();
+    mainPinElement.removeEventListener('mousedown', onMainPinClick);
+    mainPinElement.removeEventListener('keydown', onMainPinPress);
+  };
+
+  var onMainPinPress = function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      window.form.setAddress(getMainPinCoordinateActivePage());
+      window.page.activate();
+      mainPinElement.removeEventListener('mousedown', onMainPinClick);
+      mainPinElement.removeEventListener('keydown', onMainPinPress);
+    }
+  };
+
+  housingTypeElement.addEventListener('change', function () {
+    pins = listOfPinsElement.querySelectorAll('button[type=button]');
+    var typeOfHousing = cardData.filter(function (element) {
+      return housingTypeElement.value === 'any' ? true : element.offer.type === housingTypeElement.value;
+    });
+    addPins(createMaxPinsArray(typeOfHousing));
+  });
+
+  mainPinElement.addEventListener('mousedown', onMainPinClick);
+  mainPinElement.addEventListener('keydown', onMainPinPress);
+
   window.form.deactivateElements(true);
   window.util.setDisabled(mapFiltersElements, true);
   window.form.setAddress(getMainPinCoordinateDisabledPage());
-  window.backend.load(loadSuccsess, window.notification.showError);
 
   window.map = {
     activate: activateMap,
