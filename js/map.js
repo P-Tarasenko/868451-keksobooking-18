@@ -42,27 +42,17 @@
   };
 
   var createMaxPinsArray = function (arr) {
-    if (arr.length > MAX_VISIBLE_PINS) {
-      return arr.slice(0, MAX_VISIBLE_PINS);
-    } else {
-      return arr;
-    }
+    return arr.slice(0, MAX_VISIBLE_PINS);
   };
 
   var loadSuccsess = function (data) {
 
     housingTypeElement.addEventListener('change', function () {
       pins = listOfPinsElement.querySelectorAll('button[type=button]');
-      if (housingTypeElement.value === 'any') {
-        // clearListOfPins();
-        addPins(createMaxPinsArray(data));
-      } else {
-        var typeOfHousing = data.filter(function (element) {
-          return element.offer.type === housingTypeElement.value;
-        });
-        // clearListOfPins();
-        addPins(createMaxPinsArray(typeOfHousing));
-      }
+      var typeOfHousing = data.filter(function (element) {
+        return housingTypeElement.value === 'any' ? true : element.offer.type === housingTypeElement.value;
+      });
+      addPins(createMaxPinsArray(typeOfHousing));
     });
 
     mainPinElement.addEventListener('mousedown', function () {
@@ -75,7 +65,7 @@
       if (evt.keyCode === ENTER_KEYCODE) {
         window.form.setAddress(getMainPinCoordinateActivePage());
         window.page.activate();
-        addPins(data);
+        addPins(createMaxPinsArray(data));
       }
     });
   };
