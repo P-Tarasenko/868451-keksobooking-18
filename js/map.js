@@ -8,6 +8,7 @@
   var HALF_MAIN_PIN = Math.round(62 / 2);
   var HEIGHT_MAIN_PIN = 87;
   var MAX_VISIBLE_PINS = 5;
+  var cardData = [];
   var pins = [];
   var filtersFormElement = document.querySelector('.map__filters');
   var housingTypeElement = filtersFormElement.querySelector('#housing-type');
@@ -46,6 +47,7 @@
   };
 
   var loadSuccsess = function (data) {
+    cardData = data;
 
     housingTypeElement.addEventListener('change', function () {
       pins = listOfPinsElement.querySelectorAll('button[type=button]');
@@ -55,19 +57,8 @@
       addPins(createMaxPinsArray(typeOfHousing));
     });
 
-    mainPinElement.addEventListener('mousedown', function () {
-      window.form.setAddress(getMainPinCoordinateActivePage());
-      window.page.activate();
-      addPins(createMaxPinsArray(data));
-    });
-
-    mainPinElement.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === ENTER_KEYCODE) {
-        window.form.setAddress(getMainPinCoordinateActivePage());
-        window.page.activate();
-        addPins(createMaxPinsArray(data));
-      }
-    });
+    mainPinElement.addEventListener('mousedown', onMainPinClick);
+    mainPinElement.addEventListener('keydown', onMainPinPress);
   };
 
   var openCard = function (data) {
@@ -156,6 +147,24 @@
   var onCardEscPress = function (evt) {
     if (evt.keyCode === window.util.ESC_KEYCODE) {
       closeCard();
+    }
+  };
+
+  var onMainPinClick = function () {
+    window.form.setAddress(getMainPinCoordinateActivePage());
+    window.page.activate();
+    addPins(createMaxPinsArray(cardData));
+    mainPinElement.removeEventListener('mousedown', onMainPinClick);
+    mainPinElement.removeEventListener('keydown', onMainPinPress);
+  };
+
+  var onMainPinPress = function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      window.form.setAddress(getMainPinCoordinateActivePage());
+      window.page.activate();
+      addPins(createMaxPinsArray(cardData));
+      mainPinElement.removeEventListener('mousedown', onMainPinClick);
+      mainPinElement.removeEventListener('keydown', onMainPinPress);
     }
   };
 
