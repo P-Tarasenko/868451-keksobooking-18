@@ -27,6 +27,7 @@
   };
 
   var activateMap = function () {
+    window.backend.load(loadSuccsess, window.notification.showError);
     mapElement.classList.remove('map--faded');
   };
 
@@ -46,19 +47,16 @@
     return arr.slice(0, MAX_VISIBLE_PINS);
   };
 
+  var clearListOfPins = function () {
+    for (var i = 0; i < pins.length; i++) {
+      var node = pins[i];
+      listOfPinsElement.removeChild(node);
+    }
+  };
+
   var loadSuccsess = function (data) {
     cardData = data;
-
-    housingTypeElement.addEventListener('change', function () {
-      pins = listOfPinsElement.querySelectorAll('button[type=button]');
-      var typeOfHousing = data.filter(function (element) {
-        return housingTypeElement.value === 'any' ? true : element.offer.type === housingTypeElement.value;
-      });
-      addPins(createMaxPinsArray(typeOfHousing));
-    });
-
-    mainPinElement.addEventListener('mousedown', onMainPinClick);
-    mainPinElement.addEventListener('keydown', onMainPinPress);
+    addPins(createMaxPinsArray(cardData));
   };
 
   var openCard = function (data) {
@@ -94,14 +92,6 @@
 
   var addPins = function (arr) {
     var fragment = document.createDocumentFragment();
-
-    var clearListOfPins = function () {
-      for (var i = 0; i < pins.length; i++) {
-        var node = pins[i];
-        listOfPinsElement.removeChild(node);
-      }
-    };
-
     for (var i = 0; i < arr.length; i++) {
       fragment.appendChild(createPin(arr[i]));
     }
@@ -153,7 +143,6 @@
   var onMainPinClick = function () {
     window.form.setAddress(getMainPinCoordinateActivePage());
     window.page.activate();
-    addPins(createMaxPinsArray(cardData));
     mainPinElement.removeEventListener('mousedown', onMainPinClick);
     mainPinElement.removeEventListener('keydown', onMainPinPress);
   };
@@ -162,16 +151,25 @@
     if (evt.keyCode === ENTER_KEYCODE) {
       window.form.setAddress(getMainPinCoordinateActivePage());
       window.page.activate();
-      addPins(createMaxPinsArray(cardData));
       mainPinElement.removeEventListener('mousedown', onMainPinClick);
       mainPinElement.removeEventListener('keydown', onMainPinPress);
     }
   };
 
+  housingTypeElement.addEventListener('change', function () {
+    pins = listOfPinsElement.querySelectorAll('button[type=button]');
+    var typeOfHousing = cardData.filter(function (element) {
+      return housingTypeElement.value === 'any' ? true : element.offer.type === housingTypeElement.value;
+    });
+    addPins(createMaxPinsArray(typeOfHousing));
+  });
+
+  mainPinElement.addEventListener('mousedown', onMainPinClick);
+  mainPinElement.addEventListener('keydown', onMainPinPress);
+
   window.form.deactivateElements(true);
   window.util.setDisabled(mapFiltersElements, true);
   window.form.setAddress(getMainPinCoordinateDisabledPage());
-  window.backend.load(loadSuccsess, window.notification.showError);
 
   window.map = {
     activate: activateMap,
