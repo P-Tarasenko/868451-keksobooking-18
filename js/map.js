@@ -8,6 +8,7 @@
   var HALF_MAIN_PIN = Math.round(62 / 2);
   var HEIGHT_MAIN_PIN = 87;
   var MAX_VISIBLE_PINS = 5;
+  var pins = [];
   var filtersFormElement = document.querySelector('.map__filters');
   var housingTypeElement = filtersFormElement.querySelector('#housing-type');
   var mapElement = document.querySelector('.map');
@@ -40,13 +41,6 @@
     return [mainPinElement.offsetLeft + HALF_MAIN_PIN, mainPinElement.offsetTop + HEIGHT_MAIN_PIN];
   };
 
-  var clearListOfPins = function (arr) {
-    for (var i = 0; i < arr.length; i++) {
-      var node = arr[i];
-      listOfPinsElement.removeChild(node);
-    }
-  };
-
   var createMaxPinsArray = function (arr) {
     if (arr.length > MAX_VISIBLE_PINS) {
       return arr.slice(0, MAX_VISIBLE_PINS);
@@ -58,15 +52,15 @@
   var loadSuccsess = function (data) {
 
     housingTypeElement.addEventListener('change', function () {
-      var pins = listOfPinsElement.querySelectorAll('button[type=button]');
+      pins = listOfPinsElement.querySelectorAll('button[type=button]');
       if (housingTypeElement.value === 'any') {
-        clearListOfPins(pins);
+        // clearListOfPins();
         addPins(createMaxPinsArray(data));
       } else {
         var typeOfHousing = data.filter(function (element) {
           return element.offer.type === housingTypeElement.value;
         });
-        clearListOfPins(pins);
+        // clearListOfPins();
         addPins(createMaxPinsArray(typeOfHousing));
       }
     });
@@ -119,9 +113,18 @@
 
   var addPins = function (arr) {
     var fragment = document.createDocumentFragment();
+
+    var clearListOfPins = function () {
+      for (var i = 0; i < pins.length; i++) {
+        var node = pins[i];
+        listOfPinsElement.removeChild(node);
+      }
+    };
+
     for (var i = 0; i < arr.length; i++) {
       fragment.appendChild(createPin(arr[i]));
     }
+    clearListOfPins();
     listOfPinsElement.appendChild(fragment);
   };
 
