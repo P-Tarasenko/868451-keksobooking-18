@@ -4,7 +4,6 @@
 
   var HALF_WIDTH_PIN = 25;
   var HALF_HEIGHT_PIN = 35;
-  var ENTER_KEYCODE = 13;
   var HALF_MAIN_PIN = Math.round(62 / 2);
   var HEIGHT_MAIN_PIN = 87;
   var MAX_VISIBLE_PINS = 5;
@@ -147,6 +146,13 @@
     };
 
     var onMouseMove = function (moveEvt) {
+      var mapOverlay = mapElement.querySelector('.map__overlay');
+      var mapOverlayLimits = {
+        top: mapElement.offsetTop,
+        right: mapOverlay.offsetWidth + mapElement.offsetLeft - mainPinElement.offsetWidth,
+        bottom: mapOverlay.offsetHeight + mapElement.offsetTop - HEIGHT_MAIN_PIN,
+        left: mapElement.offsetLeft
+      };
       moveEvt.preventDefault();
 
       var shift = {
@@ -166,7 +172,6 @@
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };
@@ -183,7 +188,7 @@
   };
 
   var onMainPinPress = function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
+    if (evt.keyCode === window.util.ENTER_KEYCODE) {
       window.form.setAddress(getMainPinCoordinateActivePage());
       window.page.activate();
       mainPinElement.removeEventListener('mousedown', onMainPinClick);
