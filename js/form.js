@@ -11,6 +11,7 @@
   var timeOutElement = formElement.querySelector('#timeout');
   var typeElement = formElement.querySelector('#type');
   var priceElement = formElement.querySelector('#price');
+  var successMessageTemplate = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
   var guestsInRooms = {
     0: '<option value="1">для 1 гостя</option>',
     1: '<option value="1">для 1 гостя</option><option value="2">для 2 гостей</option>',
@@ -41,14 +42,37 @@
     formElement.classList.add('ad-form--disabled');
   };
 
-  var onSelectChange = function () {
-    peopleValueElement.innerHTML = guestsInRooms[roomValueElement.options.selectedIndex];
+  var showSuccessMessage = function () {
+    document.body.appendChild(successMessageTemplate);
+    document.addEventListener('click', onDocumentClick);
+    document.addEventListener('keydown', onDocumentPressEsc);
   };
 
   var deactivateForm = function () {
     formElement.reset();
     deactivateElements(true);
     disabledForm();
+    showSuccessMessage();
+  };
+
+  var onDocumentClick = function () {
+    var successMessage = document.querySelector('.success');
+    document.body.removeChild(successMessage);
+    document.removeEventListener('click', onDocumentClick);
+    document.removeEventListener('keydown', onDocumentPressEsc);
+  };
+
+  var onDocumentPressEsc = function (evt) {
+    if (evt.keyCode === window.util.ESC_KEYCODE) {
+      var successMessage = document.querySelector('.success');
+      document.body.removeChild(successMessage);
+      document.removeEventListener('keydown', onDocumentPressEsc);
+      document.removeEventListener('click', onDocumentClick);
+    }
+  };
+
+  var onSelectChange = function () {
+    peopleValueElement.innerHTML = guestsInRooms[roomValueElement.options.selectedIndex];
   };
 
   typeElement.addEventListener('change', function (evt) {

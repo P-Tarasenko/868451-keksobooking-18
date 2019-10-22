@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   var enablePage = function () {
     window.map.activate();
     window.form.activate();

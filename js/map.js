@@ -32,7 +32,7 @@
   };
 
   var activateMap = function () {
-    window.backend.load(loadSuccsess, window.notification.showError);
+    window.backend.load(loadSuccess, window.notification.showError);
     mapElement.classList.remove('map--faded');
   };
 
@@ -71,7 +71,7 @@
     }
   };
 
-  var loadSuccsess = function (data) {
+  var loadSuccess = function (data) {
     cardData = data;
     addPins(createMaxPinsArray(cardData));
   };
