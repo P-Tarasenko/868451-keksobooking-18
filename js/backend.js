@@ -2,7 +2,7 @@
 
 (function () {
   var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
-  var SUBMIT_URL = 'https://js.dump.academy/keksobookin';
+  var SUBMIT_URL = 'https://js.dump.academy/keksobooking';
 
   var createXHR = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
