@@ -147,12 +147,6 @@
 
     var onMouseMove = function (moveEvt) {
       var mapOverlay = mapElement.querySelector('.map__overlay');
-      var mapOverlayLimits = {
-        top: mapElement.offsetTop,
-        right: mapOverlay.offsetWidth + mapElement.offsetLeft - mainPinElement.offsetWidth,
-        bottom: mapOverlay.offsetHeight + mapElement.offsetTop - HEIGHT_MAIN_PIN,
-        left: mapElement.offsetLeft
-      };
       moveEvt.preventDefault();
 
       var shift = {
@@ -165,8 +159,16 @@
         y: moveEvt.clientY
       };
 
-      mainPinElement.style.top = (mainPinElement.offsetTop - shift.y) + 'px';
-      mainPinElement.style.left = (mainPinElement.offsetLeft - shift.x) + 'px';
+      var x = mainPinElement.offsetLeft - shift.x;
+      var y = mainPinElement.offsetTop - shift.y;
+
+      x = Math.max(0, x);
+      x = Math.min(mapElement.offsetWidth - mainPinElement.offsetWidth, x);
+      y = Math.max(0, y);
+      y = Math.min(mapOverlay.offsetHeight - HEIGHT_MAIN_PIN, y);
+
+      mainPinElement.style.top = y + 'px';
+      mainPinElement.style.left = x + 'px';
       window.form.setAddress(getMainPinCoordinateActivePage());
     };
 
