@@ -9,6 +9,10 @@
   var MAX_VISIBLE_PINS = 5;
   var MIN_Y_VALUE = 130;
   var MAX_Y_VALUE = 630;
+  var MAIN_PIN_START_COORDS = {
+    x: 570,
+    y: 375
+  };
   var cardData = [];
   var pins = [];
   var filtersFormElement = document.querySelector('.map__filters');
@@ -44,14 +48,26 @@
     return [mainPinElement.offsetLeft + HALF_MAIN_PIN, mainPinElement.offsetTop + HEIGHT_MAIN_PIN];
   };
 
+  var restoreMainPinCoords = function () {
+    mainPinElement.style.top = MAIN_PIN_START_COORDS.y + 'px';
+    mainPinElement.style.left = MAIN_PIN_START_COORDS.x + 'px';
+  };
+
   var createMaxPinsArray = function (arr) {
     return arr.slice(0, MAX_VISIBLE_PINS);
   };
 
   var clearListOfPins = function () {
+    pins = listOfPinsElement.querySelectorAll('button[type=button]');
     for (var i = 0; i < pins.length; i++) {
       var node = pins[i];
       listOfPinsElement.removeChild(node);
+    }
+  };
+
+  var deleteCard = function () {
+    if (mapElement.querySelector('.map__card')) {
+      mapElement.removeChild(mapElement.querySelector('.map__card'));
     }
   };
 
@@ -61,9 +77,7 @@
   };
 
   var openCard = function (data) {
-    if (mapElement.querySelector('.map__card')) {
-      mapElement.removeChild(mapElement.querySelector('.map__card'));
-    }
+    deleteCard();
     mapElement.insertBefore(makeCard(data), mapElement.querySelector('.map__filters-container'));
     var closeButton = mapElement.querySelector('.popup__close');
     document.addEventListener('keydown', onCardEscPress);
@@ -200,12 +214,24 @@
   };
 
   housingTypeElement.addEventListener('change', function () {
-    pins = listOfPinsElement.querySelectorAll('button[type=button]');
     var typeOfHousing = cardData.filter(function (element) {
       return housingTypeElement.value === 'any' ? true : element.offer.type === housingTypeElement.value;
     });
     addPins(createMaxPinsArray(typeOfHousing));
   });
+
+  var deactivateMap = function () {
+    restoreMainPinCoords();
+    clearListOfPins();
+    deleteCard();
+    mapElement.classList.add('map--faded');
+    window.util.setDisabled(mapFiltersElements, true);
+    window.form.setAddress(getMainPinCoordinateDisabledPage());
+
+    mainPinElement.addEventListener('mousedown', onMainPinClick);
+    mainPinElement.addEventListener('mousedown', onMainPinMove);
+    mainPinElement.addEventListener('keydown', onMainPinPress);
+  };
 
   mainPinElement.addEventListener('mousedown', onMainPinClick);
   mainPinElement.addEventListener('mousedown', onMainPinMove);
@@ -217,7 +243,8 @@
 
   window.map = {
     activate: activateMap,
-    activateForm: activateForm
+    activateForm: activateForm,
+    deactivate: deactivateMap
   };
 
 })();

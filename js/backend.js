@@ -35,7 +35,7 @@
     xhr.send();
   };
 
-  var submit = function (data,onSuccess, onError) {
+  var submit = function (data, onSuccess, onError) {
     var xhr = createXHR(onSuccess, onError);
     xhr.open('POST', SUBMIT_URL);
     xhr.send(data);
