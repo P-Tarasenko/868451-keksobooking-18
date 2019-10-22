@@ -4,9 +4,8 @@
 
   var HALF_WIDTH_PIN = 25;
   var HALF_HEIGHT_PIN = 35;
-  var ENTER_KEYCODE = 13;
   var HALF_MAIN_PIN = Math.round(62 / 2);
-  var HEIGHT_MAIN_PIN = 87;
+  var HEIGHT_MAIN_PIN = 84;
   var MAX_VISIBLE_PINS = 5;
   var cardData = [];
   var pins = [];
@@ -140,6 +139,50 @@
     }
   };
 
+  var onMainPinMove = function (evt) {
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      var MIN_Y_VALUE = 130;
+      var MAX_Y_VALUE = 630;
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      var x = mainPinElement.offsetLeft - shift.x;
+      var y = mainPinElement.offsetTop - shift.y;
+
+      x = Math.max(0, x);
+      x = Math.min(mapElement.offsetWidth - mainPinElement.offsetWidth, x);
+      y = Math.max(MIN_Y_VALUE, y);
+      y = Math.min(MAX_Y_VALUE - HEIGHT_MAIN_PIN, y);
+
+      mainPinElement.style.top = y + 'px';
+      mainPinElement.style.left = x + 'px';
+      window.form.setAddress(getMainPinCoordinateActivePage());
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  };
+
   var onMainPinClick = function () {
     window.form.setAddress(getMainPinCoordinateActivePage());
     window.page.activate();
@@ -148,7 +191,7 @@
   };
 
   var onMainPinPress = function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
+    if (evt.keyCode === window.util.ENTER_KEYCODE) {
       window.form.setAddress(getMainPinCoordinateActivePage());
       window.page.activate();
       mainPinElement.removeEventListener('mousedown', onMainPinClick);
@@ -165,6 +208,7 @@
   });
 
   mainPinElement.addEventListener('mousedown', onMainPinClick);
+  mainPinElement.addEventListener('mousedown', onMainPinMove);
   mainPinElement.addEventListener('keydown', onMainPinPress);
 
   window.form.deactivateElements(true);
