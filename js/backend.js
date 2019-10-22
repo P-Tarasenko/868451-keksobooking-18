@@ -2,6 +2,7 @@
 
 (function () {
   var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
+  var SUBMIT_URL = 'https://js.dump.academy/keksobooking';
 
   var createXHR = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
@@ -34,8 +35,15 @@
     xhr.send();
   };
 
+  var submit = function (data,onSuccess, onError) {
+    var xhr = createXHR(onSuccess, onError);
+    xhr.open('POST', SUBMIT_URL);
+    xhr.send(data);
+  };
+
   window.backend = {
-    load: load
+    load: load,
+    submit: submit
   };
 
 })();

@@ -7,6 +7,8 @@
   var HALF_MAIN_PIN = Math.round(62 / 2);
   var HEIGHT_MAIN_PIN = 84;
   var MAX_VISIBLE_PINS = 5;
+  var MIN_Y_VALUE = 130;
+  var MAX_Y_VALUE = 630;
   var cardData = [];
   var pins = [];
   var filtersFormElement = document.querySelector('.map__filters');
@@ -146,8 +148,6 @@
     };
 
     var onMouseMove = function (moveEvt) {
-      var MIN_Y_VALUE = 130;
-      var MAX_Y_VALUE = 630;
       moveEvt.preventDefault();
 
       var shift = {
