@@ -221,6 +221,7 @@
   });
 
   var deactivateMap = function () {
+    filtersFormElement.reset();
     restoreMainPinCoords();
     clearListOfPins();
     deleteCard();
