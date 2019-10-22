@@ -3,6 +3,7 @@
 (function () {
 
   var formElement = document.querySelector('.ad-form');
+  var mainElement = document.querySelector('main');
   var addressElement = document.querySelector('#address');
   var adFormFieldsElements = formElement.querySelectorAll('fieldset');
   var peopleValueElement = formElement.querySelector('#capacity');
@@ -12,6 +13,7 @@
   var typeElement = formElement.querySelector('#type');
   var priceElement = formElement.querySelector('#price');
   var successMessageTemplate = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+  var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
   var guestsInRooms = {
     0: '<option value="1">для 1 гостя</option>',
     1: '<option value="1">для 1 гостя</option><option value="2">для 2 гостей</option>',
@@ -43,7 +45,16 @@
   };
 
   var showSuccessMessage = function () {
-    document.body.appendChild(successMessageTemplate);
+    mainElement.appendChild(successMessageTemplate);
+    document.addEventListener('click', onDocumentClick);
+    document.addEventListener('keydown', onDocumentPressEsc);
+  };
+
+  var showErrorMessage = function () {
+    mainElement.appendChild(errorMessageTemplate);
+    var closeButton = errorMessageTemplate.querySelector('.error__button');
+
+    closeButton.addEventListener('click', onDocumentClick);
     document.addEventListener('click', onDocumentClick);
     document.addEventListener('keydown', onDocumentPressEsc);
   };
@@ -57,7 +68,12 @@
 
   var onDocumentClick = function () {
     var successMessage = document.querySelector('.success');
-    document.body.removeChild(successMessage);
+    var errorMessage = document.querySelector('.error');
+    if (successMessage) {
+      mainElement.removeChild(successMessage);
+    } else {
+      mainElement.removeChild(errorMessage);
+    }
     document.removeEventListener('click', onDocumentClick);
     document.removeEventListener('keydown', onDocumentPressEsc);
   };
@@ -65,7 +81,12 @@
   var onDocumentPressEsc = function (evt) {
     if (evt.keyCode === window.util.ESC_KEYCODE) {
       var successMessage = document.querySelector('.success');
-      document.body.removeChild(successMessage);
+      var errorMessage = document.querySelector('.error');
+      if (successMessage) {
+        mainElement.removeChild(successMessage);
+      } else {
+        mainElement.removeChild(errorMessage);
+      }
       document.removeEventListener('keydown', onDocumentPressEsc);
       document.removeEventListener('click', onDocumentClick);
     }
@@ -91,9 +112,7 @@
   roomValueElement.addEventListener('change', onSelectChange);
 
   formElement.addEventListener('submit', function (evt) {
-    window.backend.submit(new FormData(formElement), window.page.deactivate, function (error) {
-      console.log(error);
-    });
+    window.backend.submit(new FormData(formElement), window.page.deactivate, showErrorMessage);
     evt.preventDefault();
   });
 
