@@ -11,6 +11,7 @@
   var timeOutElement = formElement.querySelector('#timeout');
   var typeElement = formElement.querySelector('#type');
   var priceElement = formElement.querySelector('#price');
+  var resetButtonElement = formElement.querySelector('.ad-form__reset');
   var guestsInRooms = {
     0: '<option value="1">для 1 гостя</option>',
     1: '<option value="1">для 1 гостя</option><option value="2">для 2 гостей</option>',
@@ -37,6 +38,21 @@
     formElement.classList.remove('ad-form--disabled');
   };
 
+  var disabledForm = function () {
+    formElement.classList.add('ad-form--disabled');
+  };
+
+  var deactivateForm = function () {
+    formElement.reset();
+    deactivateElements(true);
+    disabledForm();
+  };
+
+  var successSubmitForm = function () {
+    window.page.deactivate();
+    window.notification.showSuccessMessage();
+  };
+
   var onSelectChange = function () {
     peopleValueElement.innerHTML = guestsInRooms[roomValueElement.options.selectedIndex];
   };
@@ -56,6 +72,16 @@
 
   roomValueElement.addEventListener('change', onSelectChange);
 
+  formElement.addEventListener('submit', function (evt) {
+    window.backend.submit(new FormData(formElement), successSubmitForm, window.notification.showErrorMessage);
+    evt.preventDefault();
+  });
+
+  resetButtonElement.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    window.page.deactivate();
+  });
+
   peopleValueElement.innerHTML = guestsInRooms[0];
   priceElement.setAttribute('min', minPrice[typeElement.value]);
 
@@ -63,7 +89,8 @@
     setAddress: setMainPinCoordinate,
     formElement: formElement,
     deactivateElements: deactivateElements,
-    activate: activateForm
+    activate: activateForm,
+    deactivate: deactivateForm
   };
 
 })();
