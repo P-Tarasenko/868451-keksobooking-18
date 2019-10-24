@@ -32,7 +32,7 @@
   };
 
   var activateMap = function () {
-    window.backend.load(loadSuccess, window.notification.showError);
+    window.backend.load(loadSuccess, window.notification.showErrorMessage);
     mapElement.classList.remove('map--faded');
   };
 
