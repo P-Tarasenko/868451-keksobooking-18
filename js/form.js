@@ -11,6 +11,7 @@
   var timeOutElement = formElement.querySelector('#timeout');
   var typeElement = formElement.querySelector('#type');
   var priceElement = formElement.querySelector('#price');
+  var resetButtonElement = formElement.querySelector('.ad-form__reset');
   var guestsInRooms = {
     0: '<option value="1">для 1 гостя</option>',
     1: '<option value="1">для 1 гостя</option><option value="2">для 2 гостей</option>',
@@ -74,6 +75,11 @@
   formElement.addEventListener('submit', function (evt) {
     window.backend.submit(new FormData(formElement), successSubmitForm, window.notification.showErrorMessage);
     evt.preventDefault();
+  });
+
+  resetButtonElement.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    window.page.deactivate();
   });
 
   peopleValueElement.innerHTML = guestsInRooms[0];
