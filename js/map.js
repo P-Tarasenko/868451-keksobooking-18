@@ -149,6 +149,27 @@
     return cardElement;
   };
 
+  var deactivateMap = function () {
+    filtersFormElement.reset();
+    restoreMainPinCoords();
+    clearListOfPins();
+    deleteCard();
+    mapElement.classList.add('map--faded');
+    window.util.setDisabled(mapFiltersElements, true);
+    window.form.setAddress(getMainPinCoordinateDisabledPage());
+
+    mainPinElement.addEventListener('mousedown', onMainPinClick);
+    mainPinElement.addEventListener('mousedown', onMainPinMove);
+    mainPinElement.addEventListener('keydown', onMainPinPress);
+  };
+
+  var runPage = function () {
+    window.form.setAddress(getMainPinCoordinateActivePage());
+    window.page.activate();
+    mainPinElement.removeEventListener('mousedown', onMainPinClick);
+    mainPinElement.removeEventListener('keydown', onMainPinPress);
+  };
+
   var onCardEscPress = function (evt) {
     if (evt.keyCode === window.util.ESC_KEYCODE) {
       closeCard();
@@ -198,18 +219,12 @@
   };
 
   var onMainPinClick = function () {
-    window.form.setAddress(getMainPinCoordinateActivePage());
-    window.page.activate();
-    mainPinElement.removeEventListener('mousedown', onMainPinClick);
-    mainPinElement.removeEventListener('keydown', onMainPinPress);
+    runPage();
   };
 
   var onMainPinPress = function (evt) {
     if (evt.keyCode === window.util.ENTER_KEYCODE) {
-      window.form.setAddress(getMainPinCoordinateActivePage());
-      window.page.activate();
-      mainPinElement.removeEventListener('mousedown', onMainPinClick);
-      mainPinElement.removeEventListener('keydown', onMainPinPress);
+      runPage();
     }
   };
 
@@ -219,20 +234,6 @@
     });
     addPins(createMaxPinsArray(typeOfHousing));
   });
-
-  var deactivateMap = function () {
-    filtersFormElement.reset();
-    restoreMainPinCoords();
-    clearListOfPins();
-    deleteCard();
-    mapElement.classList.add('map--faded');
-    window.util.setDisabled(mapFiltersElements, true);
-    window.form.setAddress(getMainPinCoordinateDisabledPage());
-
-    mainPinElement.addEventListener('mousedown', onMainPinClick);
-    mainPinElement.addEventListener('mousedown', onMainPinMove);
-    mainPinElement.addEventListener('keydown', onMainPinPress);
-  };
 
   mainPinElement.addEventListener('mousedown', onMainPinClick);
   mainPinElement.addEventListener('mousedown', onMainPinMove);
