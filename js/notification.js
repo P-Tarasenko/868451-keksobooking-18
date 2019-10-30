@@ -23,7 +23,7 @@
     document.addEventListener('keydown', onDocumentPressEsc);
   };
 
-  var onDocumentClick = function () {
+  var closeMessage = function () {
     var successMessage = document.querySelector('.success');
     var errorMessage = document.querySelector('.error');
     if (successMessage) {
@@ -35,17 +35,13 @@
     document.removeEventListener('keydown', onDocumentPressEsc);
   };
 
+  var onDocumentClick = function () {
+    closeMessage();
+  };
+
   var onDocumentPressEsc = function (evt) {
     if (evt.keyCode === window.util.ESC_KEYCODE) {
-      var successMessage = document.querySelector('.success');
-      var errorMessage = document.querySelector('.error');
-      if (successMessage) {
-        mainElement.removeChild(successMessage);
-      } else {
-        mainElement.removeChild(errorMessage);
-      }
-      document.removeEventListener('keydown', onDocumentPressEsc);
-      document.removeEventListener('click', onDocumentClick);
+      closeMessage();
     }
   };
 
