@@ -12,6 +12,11 @@
   var typeElement = formElement.querySelector('#type');
   var priceElement = formElement.querySelector('#price');
   var resetButtonElement = formElement.querySelector('.ad-form__reset');
+  var loadPinAvatarElement = formElement.querySelector('#avatar');
+  var displayPinAvatarElement = formElement.querySelector('.ad-form-header__preview').querySelector('img');
+  var loadAdPhotoElement = formElement.querySelector('#images');
+  var adPhotoContainerElement = formElement.querySelector('.ad-form__photo-container');
+  var adPhotoElement = adPhotoContainerElement.querySelector('.ad-form__photo');
   var guestsInRooms = {
     0: '<option value="1">для 1 гостя</option>',
     1: '<option value="1">для 1 гостя</option><option value="2">для 2 гостей</option>',
@@ -84,6 +89,7 @@
 
   peopleValueElement.innerHTML = guestsInRooms[0];
   priceElement.setAttribute('min', minPrice[typeElement.value]);
+  window.util.loadPicture(loadPinAvatarElement, displayPinAvatarElement);
 
   window.form = {
     setAddress: setMainPinCoordinate,
