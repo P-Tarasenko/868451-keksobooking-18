@@ -48,9 +48,10 @@
   };
 
   window.util = {
-    setDisabled: setDisabled,
     ESC_KEYCODE: ESC_KEYCODE,
     ENTER_KEYCODE: ENTER_KEYCODE,
+    FILE_TYPES: FILE_TYPES,
+    setDisabled: setDisabled,
     debounce: debounce,
     loadPicture: loadPicture
   };

@@ -2,7 +2,6 @@
 
 (function () {
 
-  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var formElement = document.querySelector('.ad-form');
   var addressElement = document.querySelector('#address');
   var adFormFieldsElements = formElement.querySelectorAll('fieldset');
@@ -106,7 +105,7 @@
     var file = loadAdPhotoElement.files[0];
     var fileName = file.name.toLowerCase();
 
-    var matches = FILE_TYPES.some(function (it) {
+    var matches = window.util.FILE_TYPES.some(function (it) {
       return fileName.endsWith(it);
     });
 
