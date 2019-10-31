@@ -72,10 +72,17 @@
     }
   };
 
+  var removeFocusOnPin = function () {
+    if (mapElement.querySelector('.map__pin--active')) {
+      mapElement.querySelector('.map__pin--active').classList.remove('map__pin--active');
+    }
+  };
+
   var deleteCard = function () {
     if (mapElement.querySelector('.map__card')) {
       mapElement.removeChild(mapElement.querySelector('.map__card'));
     }
+    removeFocusOnPin();
   };
 
   var loadSuccess = function (data) {
@@ -95,6 +102,7 @@
 
   var closeCard = function () {
     mapElement.removeChild(mapElement.querySelector('.map__card'));
+    removeFocusOnPin();
     document.removeEventListener('keydown', onCardEscPress);
   };
 
@@ -108,6 +116,7 @@
 
     similarPin.addEventListener('click', function () {
       openCard(obj);
+      similarPin.classList.add('map__pin--active');
     });
     return similarPin;
   };
