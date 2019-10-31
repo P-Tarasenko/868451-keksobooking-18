@@ -63,6 +63,7 @@
 
   var deactivateForm = function () {
     formElement.reset();
+    displayPinAvatarElement.src = 'img/muffin-grey.svg';
     deactivateElements(true);
     disabledForm();
   };
