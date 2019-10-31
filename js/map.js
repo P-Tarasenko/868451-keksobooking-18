@@ -124,7 +124,11 @@
   var addPins = function (arr) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < arr.length; i++) {
+      if (arr[i].offer) {
       fragment.appendChild(createPin(arr[i]));
+      } else {
+        continue;
+      }
     }
     clearListOfPins();
     listOfPinsElement.appendChild(fragment);
