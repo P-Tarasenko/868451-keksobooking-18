@@ -2,6 +2,7 @@
 
 (function () {
 
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var formElement = document.querySelector('.ad-form');
   var addressElement = document.querySelector('#address');
   var adFormFieldsElements = formElement.querySelectorAll('fieldset');
@@ -29,6 +30,20 @@
     flat: 1000,
     house: 5000,
     palace: 10000
+  };
+
+  var createImage = function () {
+    var image = document.createElement('img');
+    image.setAttribute('width', 70);
+    image.setAttribute('height', 70);
+    image.style.display = 'none';
+    return image;
+  };
+
+  var createPhotoElement = function () {
+    var photoNode = adPhotoElement.cloneNode();
+    photoNode.append(createImage());
+    return photoNode;
   };
 
   var setMainPinCoordinate = function (coordinate) {
@@ -87,9 +102,31 @@
     window.page.deactivate();
   });
 
+  loadAdPhotoElement.addEventListener('change', function () {
+    var file = loadAdPhotoElement.files[0];
+    var fileName = file.name.toLowerCase();
+
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+
+    if (matches) {
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        adPhotoContainerElement.lastElementChild.lastElementChild.style.display = '';
+        adPhotoContainerElement.lastElementChild.lastElementChild.src = reader.result;
+        adPhotoContainerElement.append(createPhotoElement());
+      });
+
+      reader.readAsDataURL(file);
+    }
+  });
+
   peopleValueElement.innerHTML = guestsInRooms[0];
   priceElement.setAttribute('min', minPrice[typeElement.value]);
   window.util.loadPicture(loadPinAvatarElement, displayPinAvatarElement);
+  adPhotoElement.append(createImage());
 
   window.form = {
     setAddress: setMainPinCoordinate,
