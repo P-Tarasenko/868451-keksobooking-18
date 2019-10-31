@@ -125,7 +125,7 @@
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < arr.length; i++) {
       if (arr[i].offer) {
-      fragment.appendChild(createPin(arr[i]));
+        fragment.appendChild(createPin(arr[i]));
       } else {
         continue;
       }
@@ -135,9 +135,11 @@
   };
 
   var makeCard = function (obj) {
+    var STARTING_NODE_FOR_CHECK_CONTENT = 2;
     var cardElement = cardTemplate.cloneNode(true);
     var photosElement = cardElement.querySelector('.popup__photos');
     var string = '';
+    var elementsOfCard = cardElement.children;
 
     cardElement.querySelector('.popup__title').textContent = obj.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = obj.offer.address;
@@ -146,7 +148,7 @@
     cardElement.querySelector('.popup__text--capacity').textContent = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + obj.offer.checkin + ' , выезд до ' + obj.offer.checkout;
 
-    for (i = 0; i < obj.offer.features.length; i++) {
+    for (var i = 0; i < obj.offer.features.length; i++) {
       string += '<li class="popup__feature popup__feature--' + obj.offer.features[i] + '"></li>';
     }
 
@@ -154,10 +156,10 @@
     cardElement.querySelector('.popup__description').textContent = obj.offer.description;
     photosElement.innerHTML = '';
 
-    for (var i = 0; i < obj.offer.photos.length; i++) {
+    for (var k = 0; k < obj.offer.photos.length; k++) {
       var photo = photoTemplate.cloneNode(true);
 
-      photo.src = obj.offer.photos[i];
+      photo.src = obj.offer.photos[k];
       photosElement.appendChild(photo);
     }
     if (obj.offer.photos.length === 0) {
@@ -165,6 +167,12 @@
     }
 
     cardElement.querySelector('.popup__avatar').setAttribute('src', obj.author.avatar);
+
+    for (var j = STARTING_NODE_FOR_CHECK_CONTENT; j < elementsOfCard.length - 1; j++) {
+      if (elementsOfCard[j].textContent === '' && !elementsOfCard[j].hasChildNodes()) {
+        elementsOfCard[j].classList.add('hidden');
+      }
+    }
 
     return cardElement;
   };
