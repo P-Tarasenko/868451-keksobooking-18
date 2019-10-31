@@ -264,8 +264,8 @@
       var x = mainPinElement.offsetLeft - shift.x;
       var y = mainPinElement.offsetTop - shift.y;
 
-      x = Math.max(0, x);
-      x = Math.min(mapElement.offsetWidth - mainPinElement.offsetWidth, x);
+      x = Math.max(-HALF_MAIN_PIN, x);
+      x = Math.min(mapElement.offsetWidth - HALF_MAIN_PIN, x);
       y = Math.max(MIN_Y_VALUE, y);
       y = Math.min(MAX_Y_VALUE - HEIGHT_MAIN_PIN, y);
 
