@@ -295,7 +295,7 @@
   };
 
   var onFiltersFormChange = window.util.debounce(function () {
-    closeCard();
+    deleteCard();
     addPins(createMaxPinsArray(filterData(cardData)));
   });
 
