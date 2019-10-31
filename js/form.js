@@ -45,6 +45,15 @@
     return photoNode;
   };
 
+  var resetAdPhotos = function () {
+    var photos = adPhotoContainerElement.querySelectorAll('.ad-form__photo');
+    for (var i = 1; i < photos.length; i++) {
+      photos[i].parentNode.removeChild(photos[i]);
+    }
+    adPhotoElement.innerHTML = '';
+    adPhotoElement.append(createImage());
+  };
+
   var setMainPinCoordinate = function (coordinate) {
     addressElement.value = coordinate[0] + ', ' + coordinate[1];
   };
@@ -64,6 +73,7 @@
   var deactivateForm = function () {
     formElement.reset();
     displayPinAvatarElement.src = 'img/muffin-grey.svg';
+    resetAdPhotos();
     deactivateElements(true);
     disabledForm();
   };
