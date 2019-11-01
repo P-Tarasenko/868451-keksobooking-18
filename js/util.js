@@ -3,7 +3,8 @@
 (function () {
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
-  var DEBOUNCE_INTERVAL = 500; // ms
+  var DEBOUNCE_INTERVAL = 500;
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var setDisabled = function (arr, value) {
     for (var i = 0; i < arr.length; i++) {
@@ -25,11 +26,34 @@
     };
   };
 
+  var loadPicture = function (loadElement, displayElement) {
+    loadElement.addEventListener('change', function () {
+      var file = loadElement.files[0];
+      var fileName = file.name.toLowerCase();
+
+      var matches = FILE_TYPES.some(function (it) {
+        return fileName.endsWith(it);
+      });
+
+      if (matches) {
+        var reader = new FileReader();
+
+        reader.addEventListener('load', function () {
+          displayElement.src = reader.result;
+        });
+
+        reader.readAsDataURL(file);
+      }
+    });
+  };
+
   window.util = {
-    setDisabled: setDisabled,
     ESC_KEYCODE: ESC_KEYCODE,
     ENTER_KEYCODE: ENTER_KEYCODE,
-    debounce: debounce
+    FILE_TYPES: FILE_TYPES,
+    setDisabled: setDisabled,
+    debounce: debounce,
+    loadPicture: loadPicture
   };
 
 })();
