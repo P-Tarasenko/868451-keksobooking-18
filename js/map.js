@@ -135,6 +135,7 @@
     var cardElement = cardTemplate.cloneNode(true);
     var photosElement = cardElement.querySelector('.popup__photos');
     var string = '';
+    var photoFragment = document.createDocumentFragment();
 
     if (obj.offer.title) {
       cardElement.querySelector('.popup__title').textContent = obj.offer.title;
@@ -197,8 +198,9 @@
         photos.forEach(function (item) {
           var photo = photoTemplate.cloneNode(true);
           photo.src = item;
-          photosElement.appendChild(photo);
+          photoFragment.appendChild(photo);
         });
+        photosElement.appendChild(photoFragment);
       }
     }
 
