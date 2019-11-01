@@ -26,7 +26,7 @@
     3: '<option value="0">Не для гостей</option>'
   };
 
-  var minPrice = {
+  var minPrices = {
     bungalo: 0,
     flat: 1000,
     house: 5000,
@@ -100,8 +100,8 @@
   };
 
   typeElement.addEventListener('change', function (evt) {
-    priceElement.setAttribute('min', minPrice[evt.target.value]);
-    priceElement.setAttribute('placeholder', minPrice[evt.target.value]);
+    priceElement.setAttribute('min', minPrices[evt.target.value]);
+    priceElement.setAttribute('placeholder', minPrices[evt.target.value]);
   });
 
   timeInElement.addEventListener('change', function (evt) {
@@ -167,7 +167,7 @@
   });
 
   peopleValueElement.innerHTML = guestsInRooms[0];
-  priceElement.setAttribute('min', minPrice[typeElement.value]);
+  priceElement.setAttribute('min', minPrices[typeElement.value]);
   window.util.loadPicture(loadPinAvatarElement, displayPinAvatarElement);
   adPhotoElement.append(createImage());
 

@@ -310,7 +310,7 @@
 
       x = Math.max(-HALF_MAIN_PIN, x);
       x = Math.min(mapElement.offsetWidth - HALF_MAIN_PIN, x);
-      y = Math.max(MIN_Y_VALUE, y);
+      y = Math.max(MIN_Y_VALUE - HEIGHT_MAIN_PIN, y);
       y = Math.min(MAX_Y_VALUE - HEIGHT_MAIN_PIN, y);
 
       mainPinElement.style.top = y + 'px';
