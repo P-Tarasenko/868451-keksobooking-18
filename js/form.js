@@ -17,6 +17,8 @@
   var loadAdPhotoElement = formElement.querySelector('#images');
   var adPhotoContainerElement = formElement.querySelector('.ad-form__photo-container');
   var adPhotoElement = adPhotoContainerElement.querySelector('.ad-form__photo');
+  var adTitle = formElement.querySelector('#title');
+  var adPrice = formElement.querySelector('#price');
   var guestsInRooms = {
     0: '<option value="1">для 1 гостя</option>',
     1: '<option value="1">для 1 гостя</option><option value="2">для 2 гостей</option>',
@@ -54,6 +56,14 @@
     adPhotoElement.append(createImage());
   };
 
+  var addInvalidDisplay = function (evt) {
+    evt.target.style.border = '3px solid red';
+  };
+
+  var removeInvalidDisplay = function (elem) {
+    elem.style.border = '';
+  };
+
   var setMainPinCoordinate = function (coordinate) {
     addressElement.value = coordinate[0] + ', ' + coordinate[1];
   };
@@ -74,6 +84,8 @@
     formElement.reset();
     displayPinAvatarElement.src = 'img/muffin-grey.svg';
     resetAdPhotos();
+    removeInvalidDisplay(adTitle);
+    removeInvalidDisplay(adPrice);
     deactivateElements(true);
     disabledForm();
   };
@@ -130,6 +142,27 @@
       });
 
       reader.readAsDataURL(file);
+    }
+  });
+
+  adTitle.addEventListener('invalid', function (evt) {
+    addInvalidDisplay(evt);
+  });
+
+  adTitle.addEventListener('input', function () {
+    if (adTitle.validity.valid) {
+      removeInvalidDisplay(adTitle);
+    }
+  });
+
+  adPrice.addEventListener('invalid', function (evt) {
+    addInvalidDisplay(evt);
+  });
+
+
+  adPrice.addEventListener('input', function () {
+    if (adPrice.validity.valid) {
+      removeInvalidDisplay(adPrice);
     }
   });
 
