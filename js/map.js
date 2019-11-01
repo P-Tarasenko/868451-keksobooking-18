@@ -250,11 +250,11 @@
   };
 
   var filterByRooms = function (item) {
-    return roomsTypeElement.value === 'any' ? true : item.offer.rooms.toString() === roomsTypeElement.value;
+    return roomsTypeElement.value === 'any' || item.offer.rooms.toString() === roomsTypeElement.value;
   };
 
   var filterByGuests = function (item) {
-    return guestsTypeElement.value === 'any' ? true : item.offer.guests.toString() === guestsTypeElement.value;
+    return guestsTypeElement.value === 'any' || item.offer.guests.toString() === guestsTypeElement.value;
   };
 
   var filterByFeatures = function (item) {
