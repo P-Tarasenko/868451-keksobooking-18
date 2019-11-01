@@ -66,10 +66,9 @@
 
   var clearListOfPins = function () {
     pins = listOfPinsElement.querySelectorAll('button[type=button]');
-    for (var i = 0; i < pins.length; i++) {
-      var node = pins[i];
-      listOfPinsElement.removeChild(node);
-    }
+    pins.forEach(function (item) {
+      listOfPinsElement.removeChild(item);
+    });
   };
 
   var removeFocusOnPin = function () {
@@ -123,11 +122,11 @@
 
   var addPins = function (arr) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i].offer) {
-        fragment.appendChild(createPin(arr[i]));
+    arr.forEach(function (item) {
+      if (item.offer) {
+        fragment.appendChild(createPin(item));
       }
-    }
+    });
     clearListOfPins();
     listOfPinsElement.appendChild(fragment);
   };
@@ -191,14 +190,15 @@
     photosElement.innerHTML = '';
 
     if (obj.offer.photos) {
-      for (var k = 0; k < obj.offer.photos.length; k++) {
-        var photo = photoTemplate.cloneNode(true);
-
-        photo.src = obj.offer.photos[k];
-        photosElement.appendChild(photo);
-      }
       if (obj.offer.photos.length === 0) {
         photosElement.classList.add('hidden');
+      } else {
+        var photos = obj.offer.photos;
+        photos.forEach(function (item) {
+          var photo = photoTemplate.cloneNode(true);
+          photo.src = item;
+          photosElement.appendChild(photo);
+        });
       }
     }
 
